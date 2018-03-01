@@ -1,0 +1,71 @@
+<div class="container">
+    <div *ngIf="errorMessage" class="alert alert-danger">
+      <h2>{{errorMessage}}</h2>
+    </div>
+    <p class="display-4">
+      Selected Sale: {{selectedSaleId > 0 ? selectedSaleId : 'Create New Sale'}}
+    </p>
+    <form #saleForm="ngForm" *ngIf="selectedSale">
+      <div class="form-group">
+        <label for="heading">Heading</label>
+        <input type="text" class="form-control" [(ngModel)]="selectedSale.Heading" id="heading" name="heading" required #heading="ngModel">
+        <div [hidden]="heading.valid || heading.pristine" class="alert alert-danger">Heading is required</div>
+      </div>
+
+      <div class="form-group">
+        <label for="contact">Company</label>
+        <br>
+        <select class='select-option' (ngModelChange)="contactChanged($event)" [(ngModel)]='selectedSale.Contact.ContactId' name="contact">
+          <option class='option' [value]="0">Select One</option>
+          <option class='option' *ngFor='let contact of contacts' [value]="contact.PrimaryKey">{{contact.name}}</option>
+        </select>
+      </div>
+  
+      <div class="form-group" *ngIf="people">
+        <label for="person">Person</label>
+        <br>
+        <select class='select-option' (ngModelChange)="personChanged($event)" [(ngModel)]='selectedSale.Person.PersonId' name="person">
+          <option class='option' [value]="0">Select One</option> 
+          <option class='option' *ngFor='let person of people.value' [value]="person.personId">{{person.firstName}} {{person.lastName}}</option>
+        </select>
+      </div>
+  
+      <div class="form-group">
+        <label for="saleType">Sale Type</label>
+        <br>
+        <select class='select-option' [(ngModel)]='selectedSale.SaleType.Id' (ngModelChange)='onSaleTypeSelected($event)'
+          name="saleType">
+          <option class='option' [value]="0">Select One</option>
+          <option class='option' *ngFor='let saleType of saleTypeList' [value]="saleType.Id">{{saleType.Name}}</option>
+        </select>
+      </div>
+  
+      <div class="form-group">
+        <label for="description">Description</label>
+        <input type="text" class="form-control" [(ngModel)]="selectedSale.SaleText" id="description" name="description">
+      </div>
+  
+      <div class="form-group">
+        <div *ngFor="let udef of selectedSale.UserDefinedFields | mapToIterable:'key'">
+          <label for="{{udef}}">User defined field (progid): {{udef}}</label>
+          <input type="text" class="form-control" [(ngModel)]="selectedSale.UserDefinedFields[udef]" id="{{udef}}" name="{{udef}}">
+        </div>
+      </div>
+  
+      <hr>
+      <div class="row">
+        <div class="col">
+          <button type="submit" class="btn btn-success" (click)="saveSale()">Save</button>
+          <button type="submit" class="btn btn-success" (click)="deleteSale(selectedSale.SaleId)">Delete</button>
+        </div>
+        <div class="col">
+          &nbsp;
+        </div>
+      </div>
+      <hr>
+      <button type="button">
+        <a (click)="goBack()">Go Back</a>
+      </button>
+    </form>
+    <p>&nbsp;</p>
+  </div>

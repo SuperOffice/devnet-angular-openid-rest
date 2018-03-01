@@ -1,0 +1,4 @@
+.list-group li.selected {
+    background-color: #343a40;
+    color: azure
+}

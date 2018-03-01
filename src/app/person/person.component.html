@@ -1,0 +1,30 @@
+<div class="container" *ngIf="selectedPerson" >
+  <h1 class="display-4">SelectedId: {{selectedPersonId}}</h1>
+  <h1 class="display-4">Hello {{selectedPerson.Firstname}} {{selectedPerson.Lastname}}</h1>
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    <h2>{{errorMessage}}</h2>
+  </div>
+  <hr class="my-4">
+  <p>This contact page demonstrates how to get your company details and more.</p>
+  <div class="card">
+    <div class="card-header">Your Company Details</div>
+    <div class="card-body">
+      <dl class="row">
+        <dt class="col-sm-2">Name:</dt>
+        <dd class="col-sm-4">{{selectedPerson.Contact.Name}}</dd>
+      </dl>
+      <dl class="row">
+        <dt class="col-sm-2">Department:</dt>
+        <dd class="col-sm-4">{{selectedPerson.Contact.Department}}</dd>
+      </dl>
+      <dl class="row">
+        <dt class="col-sm-2">OrgNr:</dt>
+        <dd class="col-sm-4">{{selectedPerson.Contact.OrgNr}}</dd>
+      </dl>
+    </div>
+  </div>
+  <p>&nbsp;</p>
+  <a [routerLink]="['/persons', selectedPerson.Contact.ContactId]">
+    <button type="button" class="btn btn-primary">View Person List</button>
+  </a>
+</div>

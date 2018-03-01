@@ -1,0 +1,81 @@
+<div class="container">
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    <h2>{{errorMessage}}</h2>
+  </div>
+  <p class="display-4">
+    Selected Project: {{selectedProjectId > 0 ? selectedProjectId : 'Create New Project'}}
+  </p>
+  <form #projectForm="ngForm" *ngIf="selectedProject">
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input type="text" class="form-control" [(ngModel)]="selectedProject.Name" id="name" name="name" required #name="ngModel">
+      <div [hidden]="name.valid || name.pristine" class="alert alert-danger">Name is required</div>
+    </div>
+
+    <div class="form-group">
+      <label for="projectType">Project Type</label>
+      <br>
+      <select class='select-option' [(ngModel)]='selectedProject.ProjectType.Id' (ngModelChange)='onProjectTypeSelected($event)'
+        name="projectType">
+        <option class='option' [value]="0">Select One</option>
+        <option class='option' *ngFor='let projectType of projectTypeList' [value]="projectType.Id">{{projectType.Name}}</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="contact">Company</label>
+      <br>
+      <select class='select-option' (ngModelChange)="contactChanged($event)" [(ngModel)]='selectedProject.Contact.ContactId' name="contact">
+        <option class='option' [value]="0">Select One</option>
+        <option class='option' *ngFor='let contact of contacts' [value]="contact.PrimaryKey">{{contact.name}}</option>
+      </select>
+    </div>
+
+    <div class="form-group" *ngIf="people">
+      <label for="person">Person</label>
+      <br>
+      <select class='select-option' (ngModelChange)="personChanged($event)" [(ngModel)]='selectedProject.Person.PersonId' name="person">
+        <option class='option' [value]="0">Select One</option> 
+        <option class='option' *ngFor='let person of people.value' [value]="person.personId">{{person.firstName}} {{person.lastName}}</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="projectStatus">Project Type</label>
+      <br>
+      <select class='select-option' [(ngModel)]='selectedProject.ProjectStatus.Id' (ngModelChange)='onProjectStatusSelected($event)'
+        name="projectStatus">
+        <option class='option' [value]="0">Select One</option>
+        <option class='option' *ngFor='let projectStatus of projectStatusList' [value]="projectStatus.Id">{{projectStatus.Name}}</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description</label>
+      <input type="text" class="form-control" [(ngModel)]="selectedProject.Description" id="description" name="description">
+    </div>
+
+    <div class="form-group">
+      <div *ngFor="let udef of selectedProject.UserDefinedFields | mapToIterable:'key'">
+        <label for="{{udef}}">User defined field (progid): {{udef}}</label>
+        <input type="text" class="form-control" [(ngModel)]="selectedProject.UserDefinedFields[udef]" id="{{udef}}" name="{{udef}}">
+      </div>
+    </div>
+
+    <hr>
+    <div class="row">
+      <div class="col">
+        <button type="submit" class="btn btn-success" (click)="saveProject()">Save</button>
+        <button type="submit" class="btn btn-success" (click)="deleteProject(selectedProject.ProjectId)">Delete</button>
+      </div>
+      <div class="col">
+        &nbsp;
+      </div>
+    </div>
+    <hr>
+    <button type="button">
+      <a (click)="goBack()">Go Back</a>
+    </button>
+  </form>
+  <p>&nbsp;</p>
+</div>

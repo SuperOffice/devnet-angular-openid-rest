@@ -1,0 +1,33 @@
+<div class="container">
+  <h1 class="display-4">Hello {{claims?.firstname}} {{claims?.lastname}}</h1>
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    <h2>{{errorMessage}}</h2>
+  </div>
+  <hr class="my-4">
+  <p>This contact page demonstrates how to get your company details. In order to obtain the "My Company" details, the following request is issued:</p>
+  <pre class="code">
+    POST /api/v1/Agents/Contact/GetMyContact
+  </pre>
+  <p>Click <a target="_blank" href="https://community.superoffice.com/documentation/sdk/SO.NetServer.Web.Services/html/v1ContactAgent_GetMyContact.htm">here</a> for more information.</p>
+  <div class="card">
+    <div class="card-header">Your Company Details</div>
+    <div class="card-body">
+      <dl class="row">
+        <dt class="col-sm-2">Name:</dt>
+        <dd class="col-sm-4">{{contact?.Name}}</dd>
+      </dl>
+      <dl class="row">
+        <dt class="col-sm-2">Department:</dt>
+        <dd class="col-sm-4">{{contact?.Department}}</dd>
+      </dl>
+      <dl class="row">
+        <dt class="col-sm-2">OrgNr:</dt>
+        <dd class="col-sm-4">{{contact?.OrgNr}}</dd>
+      </dl>
+    </div>
+  </div>
+  <p>&nbsp;</p>
+  <a routerLink="/contacts">
+    <button type="button" title="api/v1/Contact?$select=name" class="btn btn-primary">View Contact List</button>
+  </a>
+</div>
