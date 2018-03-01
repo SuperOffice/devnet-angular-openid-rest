@@ -13,11 +13,11 @@ It leverages the [OpenId Connect javascript client](https://github.com/IdentityM
 
 Clone the repository on to your machine, then open the folder using a code editor such as Visual Studio Code. Open a terminal/console window in the same folder and then type the following to have npm install the node_modules folder and dependencies:
 
-npm install
+    npm install
 
 To run the example, type the following in the terminal/console window to run the application:
 
-ng serve
+    ng serve
 
 Finally, open a browser to http://localhost:4200 and you should see the main page as seen above.
 
