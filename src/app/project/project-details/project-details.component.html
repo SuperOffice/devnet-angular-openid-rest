@@ -23,20 +23,12 @@
     </div>
 
     <div class="form-group">
-      <label for="contact">Company</label>
+      <label for="associate">Responsible</label>
       <br>
-      <select class='select-option' (ngModelChange)="contactChanged($event)" [(ngModel)]='selectedProject.Contact.ContactId' name="contact">
+      <select class='select-option' [(ngModel)]='selectedProject.Associate.AssociateId' (ngModelChange)="associateChanged($event)"
+        name="associate">
         <option class='option' [value]="0">Select One</option>
-        <option class='option' *ngFor='let contact of contacts' [value]="contact.PrimaryKey">{{contact.name}}</option>
-      </select>
-    </div>
-
-    <div class="form-group" *ngIf="people">
-      <label for="person">Person</label>
-      <br>
-      <select class='select-option' (ngModelChange)="personChanged($event)" [(ngModel)]='selectedProject.Person.PersonId' name="person">
-        <option class='option' [value]="0">Select One</option> 
-        <option class='option' *ngFor='let person of people.value' [value]="person.personId">{{person.firstName}} {{person.lastName}}</option>
+        <option class='option' *ngFor='let associate of associates' [value]="associate.PrimaryKey">{{associate.fullName}}</option>
       </select>
     </div>
 

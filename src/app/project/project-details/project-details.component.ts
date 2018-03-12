@@ -15,15 +15,15 @@ import { ContactListComponent } from '../../contact/contact-list.component';
 })
 export class ProjectDetailsComponent implements OnInit {
 
-  private selectedProjectId;
-  private selectedProject;
-  private errorMessage;
-  private projectTypeList;
-  private projectStatusList;
-  private udefDefinitions;
-  private udefNames;
-  private people;
-  private contacts;
+  public selectedProjectId;
+  public selectedProject;
+  public errorMessage;
+  public projectTypeList;
+  public projectStatusList;
+  public udefDefinitions;
+  public udefNames;
+  public people;
+  public associates;
 
   constructor(private projectSvc: ProjectService, private listSvc: ListService, private contactSvc: ContactService,
     private personSvc: PersonService, private udefSvc: UdefService, private router: Router, private route: ActivatedRoute) { }
@@ -41,28 +41,26 @@ export class ProjectDetailsComponent implements OnInit {
           this.projectSvc.getProject(this.selectedProjectId)
           .subscribe(project => {
              this.selectedProject = project;
-             this.setContactAndPersonFields(this.selectedProject);
+             this.setContactAndPersonFields();
           });
         } else {
           this.projectSvc.getProject(0)
           .subscribe(project => {
             this.selectedProject = project;
-            this.setContactAndPersonFields(this.selectedProject);
+            this.setContactAndPersonFields();
           });
         }
     });
-
-    this.contactSvc.getContacts()
-    .subscribe( contactData => {
-      this.contacts = contactData.value;
-    }, error => {
-      this.errorMessage = error;
-    });
   }
 
-  setContactAndPersonFields(entitiy) {
-    entitiy.Contact = { ContactId: 0 };
-    entitiy.Person =  { PersonId:  0 };
+  setContactAndPersonFields() {
+    if(!this.selectedProject.Associate){
+      this.selectedProject.Associate = { AssociateId: 0 };
+    } else {
+      this.personSvc.getAllAssociates().subscribe( associateData => {
+        this.associates = associateData.value;
+      });
+    }
   }
 
   saveProject() {
@@ -122,15 +120,7 @@ export class ProjectDetailsComponent implements OnInit {
     });
   }
 
-  contactChanged(contactId) {
-      this.selectedProject.Contact.ContactId = contactId;
-
-      this.getAllPeople(contactId);
-
-      this.selectedProject.Person = { PersonId: 0 };
-  }
-
-  personChanged(personId) {
-      this.selectedProject.Person.PersonId = personId;
+  associateChanged(associateId) {
+      this.selectedProject.Associate.AssociateId = associateId;
   }
 }

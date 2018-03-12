@@ -14,15 +14,15 @@ import { FormsModule } from '@angular/forms';
 })
 export class SaleDetailsComponent implements OnInit {
 
-  private selectedSaleId;
-  private selectedSale;
-  private errorMessage;
-  private saleTypeList;
-  private saleStatusList;
-  private udefDefinitions;
-  private udefNames;
-  private people;
-  private contacts;
+  public selectedSaleId;
+  public selectedSale;
+  public errorMessage;
+  public saleTypeList;
+  public saleStatusList;
+  public udefDefinitions;
+  public udefNames;
+  public people;
+  public contacts;
 
   constructor(private saleSvc: SaleService, private listSvc: ListService, private contactSvc: ContactService,
     private personSvc: PersonService, private udefSvc: UdefService, private router: Router, private route: ActivatedRoute) { }
@@ -39,13 +39,13 @@ export class SaleDetailsComponent implements OnInit {
           this.saleSvc.getSale(this.selectedSaleId)
           .subscribe(sale => {
              this.selectedSale = sale;
-             this.setContactAndPersonFields(this.selectedSale);
+             this.setContactAndPersonFields();
           });
         } else {
           this.saleSvc.getSale(0)
           .subscribe(sale => {
             this.selectedSale = sale;
-            this.setContactAndPersonFields(this.selectedSale);
+            this.setContactAndPersonFields();
           });
         }
     });
@@ -58,9 +58,15 @@ export class SaleDetailsComponent implements OnInit {
     });
   }
 
-  setContactAndPersonFields(entitiy) {
-    entitiy.Contact = { ContactId: 0 };
-    entitiy.Person =  { PersonId:  0 };
+  setContactAndPersonFields() {
+    if(!this.selectedSale.Contact){
+      this.selectedSale.Contact = { ContactId: 0 };
+    } else {
+      this.people = this.getAllPeople(this.selectedSale.Contact.ContactId);
+    }
+    if(!this.selectedSale.Person) {
+      this.selectedSale.Person =  { PersonId:  0 };
+    }
   }
 
   getUserDefinedFieldTypes() {

@@ -20,16 +20,16 @@
           <option class='option' *ngFor='let contact of contacts' [value]="contact.PrimaryKey">{{contact.name}}</option>
         </select>
       </div>
-  
+
       <div class="form-group" *ngIf="people">
         <label for="person">Person</label>
         <br>
         <select class='select-option' (ngModelChange)="personChanged($event)" [(ngModel)]='selectedSale.Person.PersonId' name="person">
-          <option class='option' [value]="0">Select One</option> 
+          <option class='option' [value]="0">Select One</option>
           <option class='option' *ngFor='let person of people.value' [value]="person.personId">{{person.firstName}} {{person.lastName}}</option>
         </select>
       </div>
-  
+
       <div class="form-group">
         <label for="saleType">Sale Type</label>
         <br>
@@ -39,19 +39,19 @@
           <option class='option' *ngFor='let saleType of saleTypeList' [value]="saleType.Id">{{saleType.Name}}</option>
         </select>
       </div>
-  
+
       <div class="form-group">
         <label for="description">Description</label>
         <input type="text" class="form-control" [(ngModel)]="selectedSale.SaleText" id="description" name="description">
       </div>
-  
+
       <div class="form-group">
         <div *ngFor="let udef of selectedSale.UserDefinedFields | mapToIterable:'key'">
           <label for="{{udef}}">User defined field (progid): {{udef}}</label>
           <input type="text" class="form-control" [(ngModel)]="selectedSale.UserDefinedFields[udef]" id="{{udef}}" name="{{udef}}">
         </div>
       </div>
-  
+
       <hr>
       <div class="row">
         <div class="col">
