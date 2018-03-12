@@ -77,6 +77,16 @@ export class PersonService {
       .catch(this.onError);
    }
 
+   getAllAssociates(): Observable<any> {
+
+    let query = this.claims.webapi_url + '/Archive/InternalUsers?$select=associateDbId,fullName';
+    // query += '?$select=personId,firstName,middleName,lastName,contactId,title,birthdate,';
+    // query += 'portraitThumbnail,phone/formattedNumber,email/emailAddress';
+
+      return this.http.get(query, this.options)
+      .catch(this.onError);
+   }
+
    onError(error: HttpErrorResponse) {
     return Observable.throw(error.message || 'Server Error');
   }
