@@ -1,0 +1,29 @@
+<div class="container">
+  <div class="jumbotron">
+    <h1 class="display-4">SuperOffice Webhooks!</h1>
+    <p class="lead">This section of the site demonstrates how to work with SuperOffice Webhooks.</p>
+    <p class="important">In order to create webhooks, you must have a server able to accept POST requests, otherwise save operations will fail.</p>
+    <hr>
+    <a [routerLink]="['/webhook', 0]" class="btn btn-primary">Create New</a>
+  </div>
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    <h2>{{errorMessage}}</h2>
+  </div>
+
+  <div class="row" *ngIf="webhooks">
+    <div class="col" *ngFor="let webhook of webhooks">
+      <div class="card">
+        <div class="card-header">
+          WebhookId:
+          <span class="badge badge-primary badge-pill">{{webhook.WebhookId}}</span>
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">{{webhook.Name}}</h5>
+          <p class="card-text">{{webhook.Type}}&nbsp;</p>
+          <a [routerLink]="['/webhook', webhook.WebhookId]" class="btn btn-primary">View Details</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<toaster-container></toaster-container>

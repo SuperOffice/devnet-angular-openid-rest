@@ -1,0 +1,64 @@
+<div class="container">
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    <h2>{{errorMessage}}</h2>
+  </div>
+  <p class="display-4">
+    {{selectedWebhookId > 0 ? 'Selected Webhook: ' + selectedWebhookId : 'Create New WebHook'}}
+  </p>
+
+  <form #webhookForm="ngForm" *ngIf="selectedWebhook">
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input type="text" class="form-control" [(ngModel)]="selectedWebhook.Name" id="name" name="name" required #name="ngModel">
+      <div [hidden]="name.valid || name.pristine" class="alert alert-danger">Name is required</div>
+    </div>
+
+    <div class="form-group">
+      <label for="url">Target Url (must exist to successfully save)</label>
+      <input type="text" class="form-control" [(ngModel)]="selectedWebhook.TargetUrl" id="url" name="url">
+    </div>
+
+    <div class="form-group">
+      <label for="secret">Secret Key</label>
+      <input type="text" class="form-control" [(ngModel)]="selectedWebhook.Secret" id="secret" name="secret">
+    </div>
+
+    <div class="form-group">
+      <label>Events</label>
+      <div class="fluid-container">
+        <div class="row">
+          <div class="col" *ngFor="let source of eventSources;let i = index">
+            <div class="card">
+              <div class="card-header">
+                {{source.source.name}}
+              </div>
+              <div class="card-body">
+                <div class="col" *ngFor="let eventDef of source.events; let j = index">
+                    <label>
+                      <input type="checkbox" [id]="eventDef.name+i+j" [(ngModel)]="eventDef.selected" name="{{eventDef.name+i+j}}"> {{eventDef.name}}
+                    </label>
+                </div>
+              </div>
+            </div><br>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr>
+    <div class="row">
+      <div class="col">
+        <button type="submit" class="btn btn-success" (click)="saveWebhook()">Save</button>
+        <button type="submit" class="btn btn-success" (click)="deleteWebhook(selectedWebhook.WebhookId)">Delete</button>
+      </div>
+      <div class="col">
+        &nbsp;
+      </div>
+    </div>
+    <hr>
+    <button type="button">
+      <a (click)="goBack()">Go Back</a>
+    </button>
+  </form>
+  <p>&nbsp;</p>
+</div>

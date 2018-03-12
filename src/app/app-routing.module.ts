@@ -18,6 +18,8 @@ import { SaleComponent } from './sale/sale.component';
 import { SaleDetailsComponent } from './sale/sale-details/sale-details.component';
 import { DocumentComponent } from './document/document.component';
 import { DocumentDetailComponent } from './document/document-detail/document-detail.component';
+import { WebhookComponent } from './webhook/webhook.component';
+import { WebhookDetailsComponent } from './webhook/details/webhookdetails.component';
 
 const routes: Routes = [
   {
@@ -92,6 +94,16 @@ const routes: Routes = [
   {
     path: 'documents/:id',
     component: DocumentDetailComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'webhook',
+    component: WebhookComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'webhook/:id',
+    component: WebhookDetailsComponent,
     canActivate: [AuthGuardService]
   },
   {

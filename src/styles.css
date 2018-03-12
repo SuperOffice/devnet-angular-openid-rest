@@ -1,10 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~bootstrap/dist/css/bootstrap.css";
+@import '../node_modules/angular5-toaster/dist/toaster.css';
 
 body {
-    padding-top: 80px; 
+    padding-top: 80px;
  }
- 
+
  .starter-template {
      padding: 3rem 1.5rem;
      text-align: center;

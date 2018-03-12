@@ -9,9 +9,9 @@ import { ProjectService } from '../services/project.service';
 })
 export class ProjectComponent implements OnInit {
 
-  private projects;
-  private claims;
-  private errorMessage;
+  public projects;
+  public claims;
+  public errorMessage;
 
   constructor(private projectSvc: ProjectService, private authService: AuthService) { }
 
