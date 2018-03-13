@@ -47,7 +47,7 @@
 
       <div class="form-group">
         <div *ngFor="let udef of selectedSale.UserDefinedFields | mapToIterable:'key'">
-          <label for="{{udef}}">User defined field (progid): {{udef}}</label>
+          <label for="{{udef}}">Udef: {{ getUdefLabelByProgId(udef) }} (progid: {{udef}})</label>
           <input type="text" class="form-control" [(ngModel)]="selectedSale.UserDefinedFields[udef]" id="{{udef}}" name="{{udef}}">
         </div>
       </div>

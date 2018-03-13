@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { PersonService } from '../services/person.service';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { AuthService, Claims } from '../services/auth.service';
+import { AuthService} from '../services';
+import { Claims } from '../model';
 import { Route } from '@angular/router/src/config';
 
 @Component({

@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { AuthService, Claims } from '../services/auth.service';
+import { AuthService } from '../services/auth.service';
 import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { HttpResponse } from 'selenium-webdriver/http';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
+import { Claims } from '../model';
 
 @Injectable()
 export class DocumentService {

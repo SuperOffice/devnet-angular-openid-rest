@@ -30,10 +30,10 @@
           <div class="col" *ngFor="let source of eventSources;let i = index">
             <div class="card">
               <div class="card-header">
-                {{source.source.name}}
+                {{source.sourceDefinition.name}}
               </div>
               <div class="card-body">
-                <div class="col" *ngFor="let eventDef of source.events; let j = index">
+                <div class="col" *ngFor="let eventDef of source.eventDefinition; let j = index">
                     <label>
                       <input type="checkbox" [id]="eventDef.name+i+j" [(ngModel)]="eventDef.selected" name="{{eventDef.name+i+j}}"> {{eventDef.name}}
                     </label>

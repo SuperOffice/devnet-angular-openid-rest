@@ -72,8 +72,16 @@ export class SaleDetailsComponent implements OnInit {
   getUserDefinedFieldTypes() {
     this.udefSvc.getAllSaleUdefFields().subscribe ( udefs => {
       this.udefDefinitions = udefs;
-      this.udefNames = this.udefSvc.fieldDataTypesByType;
     });
+  }
+
+  getUdefLabelByProgId(progId: string): string {
+    for (let udef of this.udefDefinitions) {
+      if (udef.ProgId === progId) {
+        return udef.FieldLabel;
+      }
+    }
+    return "";
   }
 
   saveSale() {

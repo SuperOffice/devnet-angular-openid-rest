@@ -84,7 +84,6 @@ export class DocumentDetailComponent implements OnInit {
   getUserDefinedFieldTypes() {
     this.udefSvc.getAllProjectUdefFields().subscribe ( udefs => {
       this.udefDefinitions = udefs;
-      this.udefNames = this.udefSvc.fieldDataTypesByType;
     });
   }
 

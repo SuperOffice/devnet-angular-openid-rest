@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService, Claims } from '../services/auth.service';
-import { ProjectService } from '../services/project.service';
+import { Claims } from '../model'
+import { AuthService, ProjectService } from '../services';
 
 @Component({
   selector: 'app-project',

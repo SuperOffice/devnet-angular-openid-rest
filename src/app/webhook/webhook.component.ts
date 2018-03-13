@@ -3,10 +3,7 @@ import { Source } from '../model/source';
 
 import { WebhookSocketService } from '../services/webhooksocket.service';
 import { WebhookService } from '../services/webhook.service';
-import { IWebHook, EventSource } from '../model/webhook'
-import { Message } from '../model/message'
-import { Event } from '../model/event'
-import { WebhookPayload } from '../model/webhookpayload';
+import { IWebHook, EventSource, Event, WebhookPayload } from '../model'
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToasterContainerComponent, ToasterService } from 'angular5-toaster';
@@ -32,7 +29,7 @@ export class WebhookComponent implements OnInit {
     // uncomment this line to test receiving webhooks
     // requires having web server to connect to via websockets
     // web server settings in \services\webhooksocket.service.ts
-    // this.initIoConnection();
+    //this.initIoConnection();
 
     this.webhookSvc.getAllWebhooks()
     .subscribe( webhookData => {

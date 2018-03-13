@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { UserManager, UserManagerSettings, User } from 'oidc-client';
 import { Router } from '@angular/router';
+import { Claims } from '../model';
 
 @Injectable()
 export class AuthService {
@@ -28,7 +29,7 @@ export class AuthService {
   getClaims(): Claims {
 
     if (this.claims) {
-      return this.claims;
+       return this.claims;
     }
 
     this.claims = new Claims();
@@ -137,19 +138,4 @@ export function getClientSettings(): UserManagerSettings {
       }
     ]
   };
-}
-
-export class Claims {
-  associateid: number;
-  ctx: string;
-  email: string;
-  firstname: string;
-  lastname: string;
-  identityprovider: string;
-  is_administrator: boolean;
-  netserver_url: string;
-  serial: number;
-  upn: string;
-  webapi_url: string;
-  system_user: string;
 }

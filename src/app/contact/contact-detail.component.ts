@@ -6,6 +6,7 @@ import { UdefService } from '../services/udef.service';
 import { Contact } from './contact.interface';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { UdefType, UserDefinedField } from '../model';
 
 @Component({
   selector: 'app-contact-detail',
@@ -69,7 +70,7 @@ import { FormsModule } from '@angular/forms';
 
       <div class="form-group">
           <div *ngFor="let udef of selectedContact.UserDefinedFields | mapToIterable:'key'">
-            <label for="{{udef}}">User defined field (progid): {{udef}}</label>
+            <label for="{{udef}}">Udef: {{ getUdefLabelByProgId(udef) }}, (progid: {{udef}})</label>
             <input type="text" class="form-control" [(ngModel)]="selectedContact.UserDefinedFields[udef]"
              id="{{udef}}" name="{{udef}}">
           </div>
@@ -102,8 +103,8 @@ export class ContactDetailComponent implements OnInit {
   public countryList;
 
   private deleted;
-  private udefDefinitions;
-  private udefNames;
+  private udefDefinitions: UserDefinedField[];
+  private udefNames
 
 
   constructor(private contactSvc: ContactService, private listService: ListService,
@@ -162,10 +163,19 @@ export class ContactDetailComponent implements OnInit {
   }
 
   getUserDefinedFieldTypes() {
-    this.udefSvc.getAllContactUdefFields().subscribe ( udefs => {
+    this.udefSvc.getAllUdefFields('Contact').subscribe ( (udefs: UserDefinedField[]) => {
       this.udefDefinitions = udefs;
-      this.udefNames = this.udefSvc.fieldDataTypesByType;
     });
+  }
+
+  getUdefLabelByProgId(progId: string): string {
+
+    for (let udef of this.udefDefinitions) {
+      if(udef.ProgId === progId) {
+        return udef.FieldLabel;
+      }
+    }
+    return '';
   }
 
   onBusinessSelected(data) {

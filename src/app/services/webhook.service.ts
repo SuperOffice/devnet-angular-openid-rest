@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { AuthService, Claims } from "../services/auth.service";
+import { AuthService } from "../services/auth.service";
 import {
   HttpClient,
   HttpHeaders,
@@ -7,9 +7,7 @@ import {
   HttpErrorResponse
 } from "@angular/common/http";
 import { Observable } from "rxjs/Observable";
-import { Source } from "../model/source";
-import { EventType } from "../model/eventtype";
-import { IWebHook, EventSource } from "../model/webhook";
+import { IWebHook, Source, EventType, EventSource, Claims, EventDefinition, SourceDefinition } from "../model";
 
 @Injectable()
 export class WebhookService {
@@ -87,9 +85,10 @@ export class WebhookService {
   }
 
   getEventDefinition(eventName: string, eventType: Source): EventSource {
+
     return {
-      source: { source: eventType, name: eventName },
-      events: [
+      sourceDefinition: { sourceType: eventType, name: eventName },
+      eventDefinition: [
         {
           name: "Created",
           eventType: EventType.CREATED,

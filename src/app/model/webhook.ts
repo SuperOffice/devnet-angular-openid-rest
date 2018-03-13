@@ -1,6 +1,3 @@
-import { Source } from './source';
-import { EventType } from './eventtype';
-
 export interface IWebHook {
   WebhookId: number;
   Name: string;
@@ -15,21 +12,6 @@ export interface IWebHook {
   RegisteredAssociate: IAssociate;
   Updated: string;
   UpdatedAssociate: IAssociate;
-}
-
-export interface EventDefinition {
-  name: string,
-  eventType: EventType;
-  selected: boolean;
-}
-export interface SourceDefinition {
-  source: Source;
-  name: string;
-}
-
-export interface EventSource {
-  source: SourceDefinition;
-  events: EventDefinition [];
 }
 
 export interface IAssociate {

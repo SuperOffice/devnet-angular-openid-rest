@@ -4,7 +4,6 @@ import { Observer } from "rxjs/Observer";
 
 import * as socketIo from "socket.io-client";
 
-import { Message } from "../model/message";
 import { Event } from "../model/event";
 import { WebhookPayload } from '../model/webhookpayload'
 

@@ -3,9 +3,8 @@ import { ActivatedRoute, Router, ParamMap } from "@angular/router";
 import { FormsModule } from "@angular/forms";
 
 import { WebhookService } from "../../services/webhook.service";
-import { IWebHook, EventSource, EventDefinition } from "../../model/webhook";
-import { Source } from "../../model/source";
-import { EventType } from "../../model/eventtype";
+import { IWebHook,  EventType, Source, EventSource } from "../../model";
+
 
 @Component({
   selector: "app-webhookdetails",
@@ -61,15 +60,15 @@ export class WebhookDetailsComponent implements OnInit {
       for (let j = 0; j < this.eventSources.length; j++) {
         let eventListing = this.eventSources[j];
 
-        if (whEvent[0] == this.eventSources[j].source.source.toString()) {
-          for (let k = 0; k < this.eventSources[j].events.length; k++) {
-            const eventIndex = this.eventSources[j].events[k];
+        if (whEvent[0] == this.eventSources[j].sourceDefinition.sourceType.toString()) {
+          for (let k = 0; k < this.eventSources[j].eventDefinition.length; k++) {
+            const eventIndex = this.eventSources[j].eventDefinition[k];
 
             if (
-              whEvent[1] == this.eventSources[j].events[k].name.toLowerCase()
+              whEvent[1] == this.eventSources[j].eventDefinition[k].name.toLowerCase()
             ) {
               // found the correct event, lets set it...
-              this.eventSources[j].events[k].selected = true;
+              this.eventSources[j].eventDefinition[k].selected = true;
             }
           }
         }
@@ -81,9 +80,9 @@ export class WebhookDetailsComponent implements OnInit {
     //prepare list of events:
     let eventListing: string[] = [];
     this.eventSources.forEach(s => {
-      s.events.forEach(ev => {
+      s.eventDefinition.forEach(ev => {
         if (ev.selected) {
-          eventListing.push(s.source.source + "." + ev.name.toLowerCase());
+          eventListing.push(s.sourceDefinition.sourceType + "." + ev.name.toLowerCase());
         }
       });
     });

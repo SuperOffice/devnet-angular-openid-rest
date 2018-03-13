@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { AuthService, Claims } from '../services/auth.service';
+import { AuthService } from '../services/auth.service';
+import { Claims } from '../model';
 import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { HttpResponse } from 'selenium-webdriver/http';

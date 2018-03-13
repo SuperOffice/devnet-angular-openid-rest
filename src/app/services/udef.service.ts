@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
-import { AuthService, Claims } from '../services/auth.service';
+import { AuthService } from '../services/auth.service';
+import { Claims } from '../model';
 import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
+import { UdefType, UserDefinedField } from '../model'
 
 @Injectable()
 export class UdefService {
@@ -9,27 +12,6 @@ export class UdefService {
   private claims: Claims;
   private options;
 
-  public fieldDataTypes = {
-    1 : 'number',
-    2 : 'shortText',
-    3 : 'longText',
-    4 : 'date',
-    5 : 'unlimitedDate',
-    6 : 'checkbox',
-    7 : 'list',
-    8 : 'decimal'
-  };
-
-  public fieldDataTypesByType = {
-    'number'       : 1,
-    'shortText'    : 2,
-    'longText'     : 3,
-    'date'         : 4,
-    'unlimitedDate': 5,
-    'checkbox'     : 6,
-    'list'         : 7,
-    'decimal'      : 8
-    };
 
   constructor(private authService: AuthService, private http: HttpClient) {
     this.options = {
@@ -39,20 +21,24 @@ export class UdefService {
     this.claims = this.authService.getClaims();
    }
 
-   getAllContactUdefFields() {
-    return this.http.get(this.claims.webapi_url + '/Contact/UdefLayout/Published/', this.options);
+   getAllUdefFields(entityName: string): Observable<any> {
+    return this.http.get(`${this.claims.webapi_url}/${entityName}/UdefLayout/Published/`, this.options);
+   }
+
+   getAllContactUdefFields(): Observable<any> {
+    return this.getAllUdefFields('Contact');
    }
 
    getAllProjectUdefFields() {
-    return this.http.get(this.claims.webapi_url + '/Project/UdefLayout/Published/', this.options);
+    return this.getAllUdefFields('Project');
    }
 
    getAllSaleUdefFields() {
-    return this.http.get(this.claims.webapi_url + '/Sale/UdefLayout/Published/', this.options);
+    return this.getAllUdefFields('Sale');
    }
 
    getAllDocumentUdefFields() {
-    return this.http.get(this.claims.webapi_url + '/Document/UdefLayout/Published/', this.options);
+    return this.getAllUdefFields('Document');
    }
 
    onError(error: HttpErrorResponse) {

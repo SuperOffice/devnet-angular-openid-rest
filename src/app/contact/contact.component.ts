@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService, Claims } from '../services/auth.service';
-import { ContactService } from '../services/contact.service';
+import { AuthService, ContactService } from '../services';
+import { Claims } from '../model'
 import { Contact } from './contact.interface';
 
 @Component({
