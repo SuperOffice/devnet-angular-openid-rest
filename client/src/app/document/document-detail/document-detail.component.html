@@ -1,0 +1,119 @@
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <div *ngIf="errorMessage" class="alert alert-danger">
+        <h2>{{errorMessage}}</h2>
+      </div>
+      <p class="display-4">
+        Selected Document: {{selectedDocumentId > 0 ? selectedDocumentId : 'Create New Document'}}
+      </p>
+
+      <form #ddForm="ngForm" *ngIf="selectedDocument">
+        <div class="form-group">
+          <label for="documentTemplate">Document Template</label>
+          <br>
+          <select class='select-option' [(ngModel)]='selectedDocument.DocumentTemplate.DocumentTemplateId' required #documentTemplate="ngModel"
+            (ngModelChange)='onDocTemplateItemSelected($event)' name="documentTemplate">
+            <option class='option' [value]="0">Select One</option>
+            <option class='option' *ngFor='let templateItem of docTemplateList' [value]="templateItem.DocumentTemplateId">{{templateItem.Name}}</option>
+          </select>
+          <div [hidden]="(documentTemplate.valid || documentTemplate.pristine) && documentTemplate.value > 0" class="alert alert-danger">Template type required</div>
+        </div>
+
+        <div class="form-group">
+          <label for="contact">Company</label>
+          <br>
+          <select class='select-option' (ngModelChange)="contactChanged($event)" [(ngModel)]='selectedDocument.Contact.ContactId' name="contact">
+            <option class='option' [value]="0">Select One</option>
+            <option class='option' *ngFor='let contact of contacts' [value]="contact.PrimaryKey">{{contact.name}}</option>
+          </select>
+        </div>
+
+        <div class="form-group" *ngIf="people">
+          <label for="person">Person</label>
+          <br>
+          <select class='select-option' (ngModelChange)="personChanged($event)" [(ngModel)]='selectedDocument.Person.PersonId' name="person">
+            <option class='option' [value]="0">Select One</option>
+            <option class='option' *ngFor='let person of people.value' [value]="person.personId">{{person.firstName}} {{person.lastName}}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="header">Header</label>
+          <input type="text" class="form-control" [(ngModel)]="selectedDocument.Header" id="header" name="header" required #header="ngModel">
+          <div [hidden]="header.valid || header.pristine" class="alert alert-danger">Header is required</div>
+        </div>
+
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" class="form-control" [(ngModel)]="selectedDocument.Name" id="name" name="name" required #name="ngModel"
+            disabled>
+          <div [hidden]="name.valid || name.pristine" class="alert alert-danger">Name is required</div>
+        </div>
+
+        <div class="form-group" [ngSwitch]="selectedDocument.DocumentId <= 0">
+          <div *ngSwitchCase="true">
+            <div class="row" >
+              <div class="col">
+                <app-file-upload (fileNameEvent)="receivedDocumentName($event)"></app-file-upload>
+              </div>
+              <!-- <div class="col" *ngIf="selectedDocument.Name != undefined && selectedDocument.Name != '' ">
+                <button type="submit" class="btn btn-primary" (click)="uploadFile()">Upload File</button>
+              </div> -->
+            </div>
+            <div class="row">
+              <div class="col">
+                <button type="submit" class="btn btn-success" (click)="saveNewDocument()">Save New</button>
+              </div>
+            </div>
+          </div>
+          <div *ngSwitchCase="false">
+            <div class="row" >
+              <div class="col">
+                <button type="submit" class="btn btn-primary" (click)="downloadFile()">Download File</button>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <button type="submit" class="btn btn-success" (click)="saveDocument()">Save</button>
+                <button type="submit" class="btn btn-success" (click)="deleteDocument(selectedDocument.DocumentId)">Delete</button>
+              </div>
+            </div>
+          </div>
+          <div *ngSwitchDefault></div>
+        </div>
+        <hr>
+        <button type="button">
+          <a (click)="goBack()">Go Back</a>
+        </button>
+      </form>
+    </div>
+    <div class="col">
+      <div class="row">
+        <p>How to create a document by Template:</p>
+      </div>
+      <div class="row">
+        <ol>
+          <li>Select template type.</li>
+          <li>Select a company.</li>
+          <li>Select a person.</li>
+          <li>Type in a header.</li>
+          <li>Click Save.</li>
+        </ol>
+      </div>
+      <div class="row">
+        <p>How to create/upload a document:</p>
+      </div>
+      <div class="row">
+        <ol>
+          <li>Select template type.</li>
+          <li>Select a company.</li>
+          <li>Select a person.</li>
+          <li>Type in a header.</li>
+          <li>Select a document.</li>
+          <li>Click Save.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
