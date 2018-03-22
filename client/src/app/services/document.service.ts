@@ -76,21 +76,17 @@ export class DocumentService {
     documentId: number,
     fileName: string,
     fileType: string
-  ): Observable<any> {
-    const contentDisposition =
-      "Content-Disposition: attachment; filename=" + fileName;
+  ): Observable<Blob> {
 
     console.log(
       `[Doc]: ${documentId}, [Filename]: ${fileName}, [Filetype]: ${fileType}`
     );
 
-    console.log("Content-Disposition: " + contentDisposition);
-
     return this.http
       .get(`${this.claims.webapi_url}/Document/${documentId}/Content`, {
         headers: new HttpHeaders({
           Authorization: this.authService.getAuthorizationHeaderValue(),
-          Accept: fileType
+          Accept: fileType,
         }),
         responseType: "blob"
       })
@@ -99,14 +95,17 @@ export class DocumentService {
 
   downloadAppFile(
     documentId: number,
+    fileName: string,
+    fileType: string,
     start: () => void,
     stop: () => void
   ): Observable<any> {
     let dlOptions = {
       headers: new HttpHeaders({
         Authorization: this.authService.getAuthorizationHeaderValue(),
-        responseType: "blob"
-      })
+        Accept: fileType
+      }),
+      responseType: "blob"
     };
 
     return this.http

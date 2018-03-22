@@ -10,9 +10,10 @@ import { ContactService } from "../../services/contact.service";
 import { PersonService } from "../../services/person.service";
 import { UdefService } from "../../services/udef.service";
 import { DocumentService } from "../../services/document.service";
-import { saveAs } from "file-saver";
+import { AuthService } from '../../services'
 import { error } from "util";
 import { mime, lookup } from 'mime-types'
+import { Claims } from "../../model";
 
 @Component({
   selector: "app-document-detail",
@@ -38,6 +39,7 @@ export class DocumentDetailComponent implements OnInit, AfterViewInit {
   public selectedPerson;
 
   private deleted;
+  private claims: Claims;
 
   constructor(
     private listSvc: ListService,
@@ -46,10 +48,13 @@ export class DocumentDetailComponent implements OnInit, AfterViewInit {
     private contactSvc: ContactService,
     private personSvc: PersonService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private authSvc: AuthService
   ) {}
 
   ngOnInit() {
+    this.claims = this.authSvc.getClaims();
+
     this.getUserDefinedFieldTypes();
 
     this.listSvc.getDocTemplateList().subscribe(
@@ -95,6 +100,10 @@ export class DocumentDetailComponent implements OnInit, AfterViewInit {
           this.selectedDocument.Person = {
             PersonId: 0
           };
+
+          this.selectedDocument.Associate = {
+            AssociateId: this.claims.associateid
+          }
         });
       }
     });
@@ -218,9 +227,7 @@ export class DocumentDetailComponent implements OnInit, AfterViewInit {
     }
 
     console.log("Document Saved!");
-    this.router.navigate(["../", { id: this.selectedDocumentId }], {
-      relativeTo: this.route
-    });
+    this.router.navigateByUrl("/document");
   }
 
   deleteDocument(documentId: number) {
@@ -245,8 +252,14 @@ export class DocumentDetailComponent implements OnInit, AfterViewInit {
       )
       .subscribe(
         document => {
-          saveAs(document, this.selectedDocument.Name);
-          console.log("Document saved!");
+          console.log(`Document returned (length): ${document.size}`);
+
+          /*
+            Here the document must be saved or shown.
+
+            This is left undone for others to implement
+            as they choose...
+          */
         },
         error => console.log(error)
       );
