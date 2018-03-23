@@ -1,12 +1,18 @@
 <div class="container">
-  <div class="d-flex justify-content-between w-100"><p class="display-4">Total Contacts: <span class="badge badge-primary badge-pill">{{contacts?.length}}</span></p><div><button type="button" (click)="onSelect(0)" class="btn btn-primary">Create New</button></div></div>
+  <div class="d-flex justify-content-between w-100">
+    <p class="display-4">Total Contacts:
+      <span class="badge badge-primary badge-pill">{{contacts?.length}}</span>
+    </p>
+    <div>
+      <button type="button" (click)="onSelect(0)" class="btn btn-primary" title="GET api/v1/Contact/default">Create New</button>
+    </div>
+  </div>
 
   <ul class="list-group" *ngFor="let contact of contacts.value">
-    <li [class.selected]="isSelected(contact.PrimaryKey)" 
-        class="list-group-item list-group-item-action list-group-item-primary" 
-        (click)="onSelect(contact.PrimaryKey)" title="/api/v1/Contact/{{contact.PrimaryKey}}">
-        
-        <span class="badge badge-primary badge-pill">{{ contact?.PrimaryKey }}</span> {{ contact?.name }}
+    <li [class.selected]="isSelected(contact.PrimaryKey)" class="list-group-item list-group-item-action list-group-item-primary"
+      (click)="onSelect(contact.PrimaryKey)" title="/api/v1/Contact/{{contact.PrimaryKey}}">
+
+      <span class="badge badge-primary badge-pill">{{ contact?.PrimaryKey }}</span> {{ contact?.name }}
     </li>
   </ul>
 

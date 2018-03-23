@@ -3,7 +3,7 @@
     <h1 class="display-4">SuperOffice Projects!</h1>
     <p class="lead">This section of the site demonstrates how to work with SuperOffice Projects.</p>
     <hr>
-    <a [routerLink]="['/projects', 0]" class="btn btn-primary">Create New</a>
+    <a [routerLink]="['/projects', 0]" class="btn btn-primary" title="GET api/v1/Project/default">Create New</a>
   </div>
   <div *ngIf="errorMessage" class="alert alert-danger">
     <h2>{{errorMessage}}</h2>
@@ -17,7 +17,7 @@
         <div class="card-body">
           <h5 class="card-title">{{project.ColumnData.name.DisplayValue}}</h5>
           <p class="card-text">{{project.ColumnData.description.DisplayValue}}&nbsp;</p>
-          <a [routerLink]="['/projects', project.ColumnData.projectId.DisplayValue]" class="btn btn-primary">View Details</a>
+          <a [routerLink]="['/projects', project.ColumnData.projectId.DisplayValue]" class="btn btn-primary" title="GET api/v1/Project/{{project.ColumnData.projectId.DisplayValue}}">View Details</a>
         </div>
       </div>
     </div>

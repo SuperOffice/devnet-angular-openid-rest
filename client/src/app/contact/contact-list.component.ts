@@ -11,8 +11,8 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 })
 export class ContactListComponent implements OnInit {
 
-  private selectedContactId;
-  private contacts = [];
+  selectedContactId;
+  contacts = [];
 
   public errorMessage;
 

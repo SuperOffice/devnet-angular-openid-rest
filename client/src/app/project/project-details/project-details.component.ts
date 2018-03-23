@@ -146,4 +146,8 @@ export class ProjectDetailsComponent implements OnInit {
     }
     return "";
   }
+
+  getSaveTitle(): string {
+    return this.selectedProject.ProjectId > 0 ? `PUT api/v1/Project/${this.selectedProject.projectId} (project json in body)` : `POST api/v1/Project (project json in body)`;
+  }
 }

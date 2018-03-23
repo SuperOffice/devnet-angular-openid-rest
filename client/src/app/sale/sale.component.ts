@@ -10,9 +10,9 @@ import { Claims } from '../model';
 })
 export class SaleComponent implements OnInit {
 
-  private errorMessage;
-  private sales;
-  private claims;
+  errorMessage;
+  sales;
+  claims;
 
   constructor(private saleSvc: SaleService, private authService: AuthService) { }
 

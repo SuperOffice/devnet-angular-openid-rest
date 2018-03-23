@@ -63,20 +63,20 @@
             </div>
             <div class="row">
               <div class="col">
-                <button type="submit" class="btn btn-success" (click)="saveNewDocument()">Save New</button>
+                <button type="submit" class="btn btn-success" (click)="saveNewDocument()" title="POST api/v1/Document (document json in body)">Save New</button>
               </div>
             </div>
           </div>
           <div *ngSwitchCase="false">
             <div class="row" >
               <div class="col">
-                <button type="submit" class="btn btn-primary" (click)="downloadFile()">Download File</button>
+                <button type="submit" class="btn btn-primary" (click)="downloadFile()" title="GET api/v1/Document/{{selectedDocument.DocumentId}}/Content">Download File</button>
               </div>
             </div>
             <div class="row">
               <div class="col">
-                <button type="submit" class="btn btn-success" (click)="saveDocument()">Save</button>
-                <button type="submit" class="btn btn-success" (click)="deleteDocument(selectedDocument.DocumentId)">Delete</button>
+                <button type="submit" class="btn btn-success" (click)="saveDocument()" title="PUT api/v1/Document{{selectedDocument.DocumentId}} (document json in body)">Save</button>
+                <button *ngIf="this.selectedDocument.DocumentId > 0" type="submit" class="btn btn-success" (click)="deleteDocument(selectedDocument.DocumentId)" title="DELETE api/v1/Document/{{selectedDocument.DocumentId}}">Delete</button>
               </div>
             </div>
           </div>

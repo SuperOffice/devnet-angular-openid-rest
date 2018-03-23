@@ -10,8 +10,9 @@ import { Person } from '../person/person.interface';
 })
 export class PersonComponent implements OnInit {
 
-  private selectedPersonId;
-  private selectedPerson: Person;
+  selectedPersonId: number;
+  selectedPerson: Person;
+  errorMessage: string;
 
   constructor(private personSvc: PersonService, private router: Router, private route: ActivatedRoute) { }
 

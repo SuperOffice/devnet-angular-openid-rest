@@ -10,7 +10,7 @@
     </div>
     <div class="col">
       <div>
-        <button type="button" (click)="onCreate()" class="btn btn-primary">Create New</button>
+        <button type="button" (click)="onCreate()" class="btn btn-primary" title="GET api/v1/Person/default">Create New</button>
       </div>
     </div>
   </div>
@@ -19,7 +19,7 @@
       <div>
         <ul class="list-group" *ngFor="let person of people.value">
           <li [class.selected]="isSelected(person.personId)" class="list-group-item list-group-item-action list-group-item-primary"
-            (click)="onSelect(person['personId'])">
+            (click)="onSelect(person['personId'])" title="GET api/v1/Person/{{person.personId}}">
 
             <span class="badge badge-primary badge-pill">{{ person["personId"] }}</span>
             {{ person["firstName"] }} {{ person["lastName"] }}
@@ -56,7 +56,7 @@
           <div class="form-group">
               <label>Email:</label>
               <!-- <div > -->
-                <input *ngFor="let email of selectedPerson.Emails; let i = index" [attr.data-index]="i" 
+                <input *ngFor="let email of selectedPerson.Emails; let i = index" [attr.data-index]="i"
                 type="text" class="form-control" [(ngModel)]="email.Value" [id]="i" [name]="i">
               <!-- </div> -->
             </div>
@@ -69,8 +69,8 @@
       <button type="button"><a (click)="goBack()">Go Back</a></button>
     </div>
     <div class="col" *ngIf="selectedPerson">
-      <button type="submit" class="btn btn-success" (click)="savePerson()">Save</button>
-      <button type="submit" class="btn btn-success" (click)="deletePerson(selectedPerson.PersonId)">Delete</button>
+      <button type="submit" class="btn btn-success" (click)="savePerson()" [title]=getSaveTitle()>Save</button>
+      <button *ngIf="selectedPerson.PersonId > 0" type="submit" class="btn btn-success" (click)="deletePerson(selectedPerson.PersonId)" [title]=getDeleteTitle()>Delete</button>
     </div>
   </div>
 </div>

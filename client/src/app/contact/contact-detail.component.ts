@@ -79,11 +79,11 @@ import { UdefType, UserDefinedField } from "../model";
       <hr>
       <div class="row">
         <div class="col">
-          <button type="submit" class="btn btn-success" (click)="saveContact()">Save</button>
-          <button type="submit" class="btn btn-success" (click)="deleteContact(selectedContact.ContactId)">Delete</button>
+          <button type="submit" class="btn btn-success" (click)="saveContact()" title="PUT api/v1/Contact/{{selectedContact.ContactId}} (contact json in body)">Save</button>
+          <button type="submit" class="btn btn-success" (click)="deleteContact(selectedContact.ContactId)" title="DELETE api/v1/Contact/{{selectedContact.ContactId}}">Delete</button>
         </div>
         <div class="col">
-          <button *ngIf="selectedContact.ContactId > 0" type="submit" class="btn btn-primary" (click)="viewPersons()">View Persons</button>
+          <button *ngIf="selectedContact.ContactId > 0" type="submit" class="btn btn-primary" (click)="viewPersons()" title="GET api/v1/Contact/{{selectedContact.ContactId}}/Persons?$select=personId,firstName,middleName,lastName,contactId,title,birthdate,portraitThumbnail,phone/formattedNumber,email/emailAddress">View Persons</button>
         </div>
       </div>
       <hr>

@@ -142,4 +142,7 @@ export class SaleDetailsComponent implements OnInit {
       this.selectedSale.Person.PersonId = personId;
   }
 
+  getSaveTitle(): string {
+    return this.selectedSale.SaleId > 0 ? `PUT api/v1/Sale/${this.selectedSale.SaleId} (sale json in body)` : `POST api/v1/Sale (sale json in body)`;
+  }
 }
