@@ -1,24 +1,25 @@
-import { Component, OnInit, AfterViewInit, ViewChild } from "@angular/core";
-import { NgSwitch } from "@angular/common";
-import { FormsModule } from "@angular/forms";
-import { ActivatedRoute, Router, ParamMap, Route } from "@angular/router";
+import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+import { NgSwitch } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router, ParamMap, Route } from '@angular/router';
 
-import { FileUploadComponent } from "../../file-upload/file-upload.component";
+import { FileUploadComponent } from '../../file-upload/file-upload.component';
 
-import { ListService } from "../../services/list.service";
-import { ContactService } from "../../services/contact.service";
-import { PersonService } from "../../services/person.service";
-import { UdefService } from "../../services/udef.service";
-import { DocumentService } from "../../services/document.service";
-import { AuthService } from '../../services'
-import { error } from "util";
-import { mime, lookup } from 'mime-types'
-import { Claims } from "../../model";
+import { ListService } from '../../services/list.service';
+import { ContactService } from '../../services/contact.service';
+import { PersonService } from '../../services/person.service';
+import { UdefService } from '../../services/udef.service';
+import { DocumentService } from '../../services/document.service';
+import { AuthService } from '../../services';
+import { error } from 'util';
+import { mime, lookup } from 'mime-types';
+import { Claims } from '../../model';
+import { Contact } from '../../contact/contact.interface';
 
 @Component({
-  selector: "app-document-detail",
-  templateUrl: "./document-detail.component.html",
-  styleUrls: ["./document-detail.component.css"]
+  selector: 'app-document-detail',
+  templateUrl: './document-detail.component.html',
+  styleUrls: ['./document-detail.component.css']
 })
 export class DocumentDetailComponent implements OnInit, AfterViewInit {
 
@@ -35,7 +36,7 @@ export class DocumentDetailComponent implements OnInit, AfterViewInit {
   public contacts;
   public people;
   public search;
-  public selectedContact;
+  public selectedContact: Contact;
   public selectedPerson;
 
   private deleted;
@@ -65,7 +66,7 @@ export class DocumentDetailComponent implements OnInit, AfterViewInit {
         this.errorMessage = error;
       },
       () => {
-        console.log("Document Details Loaded...");
+        console.log('Document Details Loaded...');
       }
     );
 
@@ -79,10 +80,10 @@ export class DocumentDetailComponent implements OnInit, AfterViewInit {
     );
 
     const documentId = this.route.paramMap.subscribe((params: ParamMap) => {
-      this.selectedDocumentId = params.get("id");
+      const selectedDocumentId = params.get('id');
 
-      if (this.selectedDocumentId > 0) {
-        this.docSvc.getDocument(this.selectedDocumentId).subscribe(document => {
+      if (selectedDocumentId > 0) {
+        this.docSvc.getDocument(selectedDocumentId).subscribe(document => {
           this.selectedDocument = document;
           this.getAllPeople(this.selectedDocument.Contact.ContactId);
         });
@@ -103,14 +104,14 @@ export class DocumentDetailComponent implements OnInit, AfterViewInit {
 
           this.selectedDocument.Associate = {
             AssociateId: this.claims.associateid
-          }
+          };
         });
       }
     });
   }
 
   ngAfterViewInit() {
-    //nothing to do here...
+    // nothing to do here...
   }
 
   receivedDocumentName($event) {
@@ -124,11 +125,11 @@ export class DocumentDetailComponent implements OnInit, AfterViewInit {
   }
 
   onDocTemplateItemSelected(selectedItem) {
-    console.log("Selected item: " + selectedItem);
+    console.log('Selected item: ' + selectedItem);
   }
 
   goBack() {
-    this.router.navigateByUrl("/document");
+    this.router.navigateByUrl('/document');
   }
 
   toggleDropDown() {
@@ -168,7 +169,7 @@ export class DocumentDetailComponent implements OnInit, AfterViewInit {
       .getContact(contact.ColumnData.contactId.DisplayValue)
       .subscribe(
         contactEntity => {
-          this.selectContact = contactEntity;
+          this.selectedContact = contactEntity;
         },
         error => {
           this.errorMessage = error;
@@ -185,8 +186,8 @@ export class DocumentDetailComponent implements OnInit, AfterViewInit {
       this.selectedDocumentId = document.DocumentId;
     });
 
-    console.log("Document Saved!");
-    this.router.navigate(["../", { id: this.selectedDocumentId }], {
+    console.log('Document Saved!');
+    this.router.navigate(['../', { id: this.selectedDocumentId }], {
       relativeTo: this.route
     });
   }
@@ -195,7 +196,7 @@ export class DocumentDetailComponent implements OnInit, AfterViewInit {
 
     // if document name, save using file-upload
 
-    if(this.selectedDocument.Name) {
+    if (this.selectedDocument.Name) {
       this.docSvc.createDocument(this.selectedDocument).subscribe(document => {
 
         // create the document definition in the database
@@ -226,8 +227,8 @@ export class DocumentDetailComponent implements OnInit, AfterViewInit {
       });
     }
 
-    console.log("Document Saved!");
-    this.router.navigateByUrl("/document");
+    console.log('Document Saved!');
+    this.router.navigateByUrl('/document');
   }
 
   deleteDocument(documentId: number) {

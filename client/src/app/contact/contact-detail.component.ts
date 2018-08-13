@@ -1,16 +1,16 @@
-import { Component, OnInit } from "@angular/core";
-import { ContactService } from "../services/contact.service";
-import { ListService } from "../services/list.service";
-import { UdefService } from "../services/udef.service";
+import { Component, OnInit } from '@angular/core';
+import { ContactService } from '../services/contact.service';
+import { ListService } from '../services/list.service';
+import { UdefService } from '../services/udef.service';
 
-import { Contact } from "./contact.interface";
-import { ActivatedRoute, Router, ParamMap } from "@angular/router";
-import { FormsModule } from "@angular/forms";
-import { UdefType, UserDefinedField } from "../model";
+import { Contact } from './contact.interface';
+import { ActivatedRoute, Router, ParamMap } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { UdefType, UserDefinedField } from '../model';
 
 @Component({
-  selector: "app-contact-detail",
-  styleUrls: ["./contact-detail.component.css"],
+  selector: 'app-contact-detail',
+  styleUrls: ['./contact-detail.component.css'],
   template: `
   <div class="container">
     <p class="display-4">
@@ -79,11 +79,15 @@ import { UdefType, UserDefinedField } from "../model";
       <hr>
       <div class="row">
         <div class="col">
-          <button type="submit" class="btn btn-success" (click)="saveContact()" title="PUT api/v1/Contact/{{selectedContact.ContactId}} (contact json in body)">Save</button>
-          <button type="submit" class="btn btn-success" (click)="deleteContact(selectedContact.ContactId)" title="DELETE api/v1/Contact/{{selectedContact.ContactId}}">Delete</button>
+          <button type="submit" class="btn btn-success" (click)="saveContact()"
+          title="PUT api/v1/Contact/{{selectedContact.ContactId}} (contact json in body)">Save</button>
+          <button type="submit" class="btn btn-success" (click)="deleteContact(selectedContact.ContactId)"
+          title="DELETE api/v1/Contact/{{selectedContact.ContactId}}">Delete</button>
         </div>
         <div class="col">
-          <button *ngIf="selectedContact.ContactId > 0" type="submit" class="btn btn-primary" (click)="viewPersons()" title="GET api/v1/Contact/{{selectedContact.ContactId}}/Persons?$select=personId,firstName,middleName,lastName,contactId,title,birthdate,portraitThumbnail,phone/formattedNumber,email/emailAddress">View Persons</button>
+          <button *ngIf="selectedContact.ContactId > 0" type="submit" class="btn btn-primary" (click)="viewPersons()"
+          title="GET api/v1/Contact/{{selectedContact.ContactId}}/Persons?$select=personId,firstName,middleName,lastName,
+          contactId,title,birthdate,portraitThumbnail,phone/formattedNumber,email/emailAddress">View Persons</button>
         </div>
       </div>
       <hr>
@@ -129,7 +133,7 @@ export class ContactDetailComponent implements OnInit {
     this.getUserDefinedFieldTypes();
 
     const contactId = this.route.paramMap.subscribe((params: ParamMap) => {
-      this.selectedContactId = params.get("id");
+      this.selectedContactId = params.get('id');
       if (this.selectedContactId > 0) {
         this.contactSvc
           .getContact(this.selectedContactId)
@@ -150,13 +154,13 @@ export class ContactDetailComponent implements OnInit {
 
   goBack() {
     // this.router.navigate(['/contacts/list', {id: this.selectedContactId}]);
-    this.router.navigate(["../", { id: this.selectedContactId }], {
+    this.router.navigate(['../', { id: this.selectedContactId }], {
       relativeTo: this.route
     });
   }
 
   viewPersons() {
-    this.router.navigate(["/persons", this.selectedContactId], {
+    this.router.navigate(['/persons', this.selectedContactId], {
       relativeTo: this.route
     });
   }
@@ -165,8 +169,8 @@ export class ContactDetailComponent implements OnInit {
     this.contactSvc.saveContact(this.selectedContact).subscribe(contact => {
       this.selectedContact = contact;
       this.selectedContactId = contact.ContactId;
-      console.log("Contact Saved!");
-      this.router.navigate(["../", { id: this.selectedContactId }], {
+      console.log('Contact Saved!');
+      this.router.navigate(['../', { id: this.selectedContactId }], {
         relativeTo: this.route
       });
     });
@@ -175,28 +179,28 @@ export class ContactDetailComponent implements OnInit {
   deleteContact(contactId) {
     this.contactSvc.deleteContact(contactId).subscribe(contact => {
       this.deleted = contact;
-      this.router.navigate(["../", { id: 0 }], { relativeTo: this.route });
+      this.router.navigate(['../', { id: 0 }], { relativeTo: this.route });
     });
   }
 
   getUserDefinedFieldTypes() {
     this.udefSvc
-      .getAllUdefFields("Contact")
+      .getAllUdefFields('Contact')
       .subscribe((udefs: UserDefinedField[]) => {
         this.udefDefinitions = udefs;
       });
   }
 
   getUdefLabelByProgId(progId: string): string {
-    for (let udef of this.udefDefinitions) {
+    for (const udef of this.udefDefinitions) {
       if (udef.ProgId === progId) {
         return udef.FieldLabel;
       }
     }
-    return "";
+    return '';
   }
 
   onBusinessSelected(data) {
-    const a = "";
+    const a = '';
   }
 }

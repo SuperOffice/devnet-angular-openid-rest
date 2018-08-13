@@ -1,27 +1,18 @@
-import { Injectable } from '@angular/core';
-import { AuthService } from '../services/auth.service';
+import { Injectable, Injector } from '@angular/core';
+import { AuthService } from './auth.service';
 import { Claims } from '../model';
 import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { HttpResponse } from 'selenium-webdriver/http';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
+import { SoBaseService } from './sobase.service';
 
 @Injectable()
-export class ListService {
+export class ListService extends SoBaseService {
 
-  private claims: Claims;
-  private options;
-
-  constructor(private http: HttpClient, private authService: AuthService) {
-    this.options = {
-      headers: new HttpHeaders({
-        'Authorization': this.authService.getAuthorizationHeaderValue(),
-        'Accept-Language': 'US'
-      }),
-    };
-
-    this.claims = this.authService.getClaims();
+  constructor(private injector: Injector) {
+    super('List', injector);
   }
 
   getBusinessList(): Observable<any> {
@@ -50,9 +41,5 @@ export class ListService {
 
   getDocTemplateList(): Observable<any> {
     return this.http.get(this.claims.webapi_url + '/List/DocumentTemplate/Items', this.options).catch(this.onError);
-  }
-
-  onError(error: HttpErrorResponse) {
-    return Observable.throw(error.message || 'Server Error');
   }
 }

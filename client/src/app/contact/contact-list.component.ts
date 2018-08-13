@@ -11,16 +11,15 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 })
 export class ContactListComponent implements OnInit {
 
-  selectedContactId;
-  contacts = [];
-
+  public selectedContactId: number;
+  public contacts = [];
   public errorMessage;
 
   constructor(private contactSvc: ContactService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.route.paramMap.subscribe((params: ParamMap) => {
-      this.selectedContactId = params.get('id');
+      this.selectedContactId = Number(params.get('id'));
     });
 
     this.contactSvc.getContacts()
@@ -37,7 +36,7 @@ export class ContactListComponent implements OnInit {
   }
 
   isSelected(contactId) {
-    return contactId === this.selectedContactId;
+    return Number(contactId) === this.selectedContactId;
   }
 
 }

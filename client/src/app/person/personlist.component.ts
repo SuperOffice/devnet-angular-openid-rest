@@ -1,14 +1,14 @@
-import { Component, OnInit } from "@angular/core";
-import { PersonService } from "../services/person.service";
-import { Router, ActivatedRoute, ParamMap } from "@angular/router";
-import { AuthService } from "../services";
-import { Claims } from "../model";
-import { Route } from "@angular/router/src/config";
+import { Component, OnInit } from '@angular/core';
+import { PersonService } from '../services/person.service';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { AuthService } from '../services';
+import { Claims } from '../model';
+import { Route } from '@angular/router/src/config';
 
 @Component({
-  selector: "app-personlist",
-  templateUrl: "./personlist.component.html",
-  styleUrls: ["./personlist.component.css"]
+  selector: 'app-personlist',
+  templateUrl: './personlist.component.html',
+  styleUrls: ['./personlist.component.css']
 })
 export class PersonlistComponent implements OnInit {
   selectedContactId;
@@ -27,7 +27,7 @@ export class PersonlistComponent implements OnInit {
 
   ngOnInit() {
     this.route.paramMap.subscribe((params: ParamMap) => {
-      this.selectedContactId = params.get("id");
+      this.selectedContactId = params.get('id');
 
       this.loadAllPeople();
     });
@@ -78,7 +78,7 @@ export class PersonlistComponent implements OnInit {
         this.errorMessage = error;
       },
       () => {
-        alert("Person Deleted");
+        alert('Person Deleted');
       }
     );
   }
@@ -105,7 +105,7 @@ export class PersonlistComponent implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(["/contacts", this.selectedContactId], {
+    this.router.navigate(['/contacts', this.selectedContactId], {
       relativeTo: this.route
     });
   }

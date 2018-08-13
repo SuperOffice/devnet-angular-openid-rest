@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PersonService } from '../services/person.service';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { Person } from '../person/person.interface';
+import { Person } from './person.interface';
 
 @Component({
   selector: 'app-person',

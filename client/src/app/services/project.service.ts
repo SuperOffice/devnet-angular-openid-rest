@@ -1,17 +1,12 @@
-import { Injectable } from '@angular/core';
-import { AuthService } from '../services/auth.service';
-import { Claims } from '../model';
-import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse } from '@angular/common/http';
+import { Injectable, Injector } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { HttpResponse } from 'selenium-webdriver/http';
 import 'rxjs/add/operator/catch';
-import 'rxjs/add/observable/throw';
+import { SoBaseService } from './sobase.service';
+
+// import { HttpResponse } from 'selenium-webdriver/http';
 
 @Injectable()
-export class ProjectService {
-
-  private claims: Claims;
-  private options;
+export class ProjectService extends SoBaseService {
 
   private queryAllProjects = {
     'ProviderName': 'FindProject',
@@ -22,12 +17,8 @@ export class ProjectService {
     'PageSize': 20
   };
 
-  constructor(private http: HttpClient, private authService: AuthService) {
-    this.options = {
-      headers: new HttpHeaders({ 'Authorization': this.authService.getAuthorizationHeaderValue() })
-    };
-
-    this.claims = this.authService.getClaims();
+  constructor(injector: Injector) {
+    super('Project', injector);
    }
 
    getAllProjects(): Observable<any> {
@@ -38,33 +29,14 @@ export class ProjectService {
 
   /** Gets or creates a project depended on projectId. 0 will create a new project */
   getProject(projectId): Observable<any> {
-    if (projectId === 0) {
-      return this.http.get<any>(this.claims.webapi_url + '/Project/default', this.options)
-      .catch(this.onError);
-     } else {
-      return this.http.get<any>(this.claims.webapi_url + '/Project/' + projectId, this.options)
-      .catch(this.onError);
-     }
+    return this.get(projectId);
   }
 
   deleteProject(projectId) {
-    return this.http.delete(this.claims.webapi_url + '/Project/' + projectId, this.options)
-    .catch(this.onError);
+    return this.delete(projectId);
   }
 
   saveProject(project) {
-    if (project.ProjectId > 0) {
-      return this.http.put<any>(this.claims.webapi_url + '/Project/' + project.ProjectId, project,
-       this.options)
-       .catch(this.onError);
-     } else {
-       return this.http.post<any>(this.claims.webapi_url + '/Project', project,
-       this.options)
-      .catch(this.onError);
-     }
-  }
-
-  onError(error: HttpErrorResponse) {
-    return Observable.throw(error.message || 'Server Error');
+    return this.save(project);
   }
 }

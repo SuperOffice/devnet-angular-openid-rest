@@ -29,7 +29,7 @@ export class WebhookDetailsComponent implements OnInit {
 
   ngOnInit() {
     const webhookId = this.route.paramMap.subscribe((params: ParamMap) => {
-      this.selectedWebhookId = Number(params.get("id"));
+      this.selectedWebhookId = Number(params.get('id'));
 
       if (this.selectedWebhookId > 0) {
         this.webhookSvc
@@ -77,8 +77,8 @@ export class WebhookDetailsComponent implements OnInit {
   }
 
   saveWebhook() {
-    //prepare list of events:
-    let eventListing: string[] = [];
+    // prepare list of events:
+    const eventListing: string[] = [];
     this.eventSources.forEach(s => {
       s.eventDefinition.forEach(ev => {
         if (ev.selected) {
@@ -89,7 +89,7 @@ export class WebhookDetailsComponent implements OnInit {
 
     this.selectedWebhook.Events = eventListing;
 
-    this.webhookSvc.save(this.selectedWebhook).subscribe(result => {
+    this.webhookSvc.saveWebhook(this.selectedWebhook).subscribe(result => {
       this.goBack();
     });
   }

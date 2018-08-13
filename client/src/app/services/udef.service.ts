@@ -1,24 +1,17 @@
-import { Injectable } from '@angular/core';
-import { AuthService } from '../services/auth.service';
+import { Injectable, Injector } from '@angular/core';
+import { AuthService } from './auth.service';
 import { Claims } from '../model';
 import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
-import { UdefType, UserDefinedField } from '../model'
+import { UdefType, UserDefinedField } from '../model';
+import { SoBaseService } from './sobase.service';
 
 @Injectable()
-export class UdefService {
+export class UdefService extends SoBaseService {
 
-  private claims: Claims;
-  private options;
-
-
-  constructor(private authService: AuthService, private http: HttpClient) {
-    this.options = {
-      headers: new HttpHeaders({ 'Authorization': this.authService.getAuthorizationHeaderValue() })
-    };
-
-    this.claims = this.authService.getClaims();
+  constructor(private injector: Injector) {
+    super('Udef', injector);
    }
 
    getAllUdefFields(entityName: string): Observable<any> {
@@ -40,9 +33,4 @@ export class UdefService {
    getAllDocumentUdefFields() {
     return this.getAllUdefFields('Document');
    }
-
-   onError(error: HttpErrorResponse) {
-    return Observable.throw(error.message || 'Server Error');
-  }
-
 }

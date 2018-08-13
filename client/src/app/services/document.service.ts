@@ -1,47 +1,33 @@
-import { Injectable } from "@angular/core";
-import { AuthService } from "../services/auth.service";
-import {
-  HttpClient,
-  HttpHeaders,
-  HttpParams,
-  HttpErrorResponse,
-  HttpResponse
-} from "@angular/common/http";
-import { Observable } from "rxjs/Observable";
-import "rxjs/add/operator/do";
-import "rxjs/add/operator/catch";
-import "rxjs/add/operator/finally";
-import "rxjs/add/observable/throw";
-import { Claims } from "../model";
+import { Injectable, Injector } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { HttpHeaders } from '@angular/common/http';
+import 'rxjs/add/operator/do';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/finally';
+import 'rxjs/add/observable/throw';
+import { Claims } from '../model';
+import { SoBaseService } from './sobase.service';
 
 @Injectable()
-export class DocumentService {
-  private claims: Claims;
-  private options: any;
+export class DocumentService extends SoBaseService {
 
   private queryAllDocuments = {
-    ProviderName: "FindDocument",
-    Columns: "documentId,text,document/description",
-    Restrictions: "documentId > 0",
-    Entities: "document",
+    ProviderName: 'FindDocument',
+    Columns: 'documentId,text,document/description',
+    Restrictions: 'documentId > 0',
+    Entities: 'document',
     Page: 0,
     PageSize: 20
   };
 
-  constructor(private http: HttpClient, private authService: AuthService) {
-    this.options = {
-      headers: new HttpHeaders({
-        Authorization: this.authService.getAuthorizationHeaderValue()
-      })
-    };
-
-    this.claims = this.authService.getClaims();
+  constructor(private injector: Injector) {
+    super('Document', injector);
   }
 
   getAllDocuments(): Observable<any> {
     return this.http
       .post<any>(
-        this.claims.webapi_url + "/Agents/Archive/GetArchiveListByColumns2",
+        this.claims.webapi_url + '/Agents/Archive/GetArchiveListByColumns2',
         this.queryAllDocuments,
         this.options
       )
@@ -49,18 +35,7 @@ export class DocumentService {
   }
 
   getDocument(documentId): Observable<any> {
-    if (documentId === 0) {
-      return this.http
-        .get<any>(this.claims.webapi_url + "/Document/default", this.options)
-        .catch(this.onError);
-    } else {
-      return this.http
-        .get<any>(
-          this.claims.webapi_url + "/Document/" + documentId,
-          this.options
-        )
-        .catch(this.onError);
-    }
+    return this.get(documentId);
   }
 
   getDocumentProperties(documentId: number): Observable<any> {
@@ -88,7 +63,7 @@ export class DocumentService {
           Authorization: this.authService.getAuthorizationHeaderValue(),
           Accept: fileType,
         }),
-        responseType: "blob"
+        responseType: 'blob'
       })
       .catch(this.onError);
   }
@@ -100,12 +75,12 @@ export class DocumentService {
     start: () => void,
     stop: () => void
   ): Observable<any> {
-    let dlOptions = {
+    const dlOptions = {
       headers: new HttpHeaders({
         Authorization: this.authService.getAuthorizationHeaderValue(),
         Accept: fileType
       }),
-      responseType: "blob"
+      responseType: 'blob'
     };
 
     return this.http
@@ -120,9 +95,7 @@ export class DocumentService {
   }
 
   deleteDocument(documentId: number): Observable<any> {
-    return this.http
-      .delete(`${this.claims.webapi_url}/Document/${documentId}`, this.options)
-      .catch(this.onError);
+    return this.delete(documentId);
   }
 
   createDocument(document: any): Observable<any> {
@@ -141,32 +114,33 @@ export class DocumentService {
     projectId?: number,
     uiCulture?: string
   ): Observable<any> {
-    //`${this.claims.webapi_url}/Document/${documentId}/Content/?contactId=${contact}&personId=${person}&appointmentId=${appointment}&saleId=${sale}&selectionId=${selection}&projectId=${project}&uiCulture=${culture}`,
+    // `${this.claims.webapi_url}/Document/${documentId}/Content/?contactId=${contact}
+    // &personId=${person}&appointmentId=${appointment}&saleId=${sale}&selectionId=${selection}&projectId=${project}&uiCulture=${culture}`,
 
     let url = `${this.claims.webapi_url}/Document/${documentId}/Content?`;
 
     if (contactId) {
-      url += this.getQueryParameter("contact", contactId);
+      url += this.getQueryParameter('contact', contactId);
     }
 
     if (personId) {
-      url += this.getQueryParameter("person", personId);
+      url += this.getQueryParameter('person', personId);
     }
 
     if (appointmentId) {
-      url += this.getQueryParameter("appointment", appointmentId);
+      url += this.getQueryParameter('appointment', appointmentId);
     }
 
     if (saleId) {
-      url += this.getQueryParameter("sale", saleId);
+      url += this.getQueryParameter('sale', saleId);
     }
 
     if (selectionId) {
-      url += this.getQueryParameter("selection", selectionId);
+      url += this.getQueryParameter('selection', selectionId);
     }
 
     if (projectId) {
-      url += this.getQueryParameter("project", projectId);
+      url += this.getQueryParameter('project', projectId);
     }
 
     return this.http.post(url, null, this.options).catch(this.onError);
@@ -182,9 +156,5 @@ export class DocumentService {
       document,
       this.options)
       .catch(this.onError);
-  }
-
-  onError(error: HttpErrorResponse) {
-    return Observable.throw(error.message || "Server Error");
   }
 }

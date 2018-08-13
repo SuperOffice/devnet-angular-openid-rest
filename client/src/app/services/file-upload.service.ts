@@ -9,7 +9,7 @@ import { Observable } from "rxjs/Observable";
 import "rxjs/add/operator/map";
 import "rxjs/add/operator/catch";
 import "rxjs/add/observable/throw";
-import { AuthService } from "../services/auth.service";
+import { AuthService } from "./auth.service";
 import { Claims } from "../model";
 
 @Injectable()

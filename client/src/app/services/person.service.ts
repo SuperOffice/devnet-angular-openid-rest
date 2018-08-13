@@ -1,15 +1,14 @@
-import { Injectable } from '@angular/core';
-import { AuthService } from '../services/auth.service';
-import { Claims } from '../model';
-import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse } from '@angular/common/http';
+import { Injectable, Injector } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { HttpResponse } from 'selenium-webdriver/http';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 import { Person } from '../person/person.interface';
+import { SoBaseService } from './sobase.service';
+
+// import { HttpResponse } from 'selenium-webdriver/http';
 
 @Injectable()
-export class PersonService {
+export class PersonService extends SoBaseService {
 
   private queryMyPerson = {
     'ProviderName': 'Person',
@@ -20,21 +19,14 @@ export class PersonService {
     'PageSize': 1
   };
 
-  private claims: Claims;
-  private options;
-
-  constructor(private authService: AuthService, private http: HttpClient) {
-    this.options = {
-      headers: new HttpHeaders({ 'Authorization': this.authService.getAuthorizationHeaderValue() })
-    };
-
-    this.claims = this.authService.getClaims();
+  constructor(injector: Injector) {
+     super('Person', injector);
    }
 
    getMyPerson(): Observable<any> {
     this.queryMyPerson.Restrictions =
       this.queryMyPerson.Restrictions.replace('placeholder',
-      this.authService.claims.associateid.toString());
+      this.claims.associateid.toString());
 
     return this.http.post<any>(
       this.claims.webapi_url + '/Agents/Archive/GetArchiveListByColumns2',
@@ -42,30 +34,15 @@ export class PersonService {
    }
 
    getPerson(personId): Observable<Person> {
-     if (personId === 0) {
-      return this.http.get<Person>(this.claims.webapi_url + '/Person/default', this.options)
-      .catch(this.onError);
-     } else {
-      return this.http.get<Person>(this.claims.webapi_url + '/Person/' + personId, this.options)
-      .catch(this.onError);
-     }
+     return this.get<Person>(personId);
    }
 
    savePerson(person) {
-     if (person.PersonId > 0) {
-      return this.http.put<Person>(this.claims.webapi_url + '/Person/' + person.PersonId, person,
-       this.options)
-       .catch(this.onError);
-     } else {
-       return this.http.post<Person>(this.claims.webapi_url + '/Person', person,
-       this.options)
-      .catch(this.onError);
-     }
+     return this.save(person);
    }
 
    deletePerson(personId) {
-    return this.http.delete(this.claims.webapi_url + '/Person/' + personId, this.options)
-    .catch(this.onError);
+    return this.delete(personId);
    }
 
    getAllPerson(contactId): Observable<any> {
@@ -80,16 +57,11 @@ export class PersonService {
 
    getAllAssociates(): Observable<any> {
 
-    let query = this.claims.webapi_url + '/Archive/InternalUsers?$select=associateDbId,fullName';
+    const query = this.claims.webapi_url + '/Archive/InternalUsers?$select=associateDbId,fullName';
     // query += '?$select=personId,firstName,middleName,lastName,contactId,title,birthdate,';
     // query += 'portraitThumbnail,phone/formattedNumber,email/emailAddress';
 
       return this.http.get(query, this.options)
       .catch(this.onError);
    }
-
-   onError(error: HttpErrorResponse) {
-    return Observable.throw(error.message || 'Server Error');
-  }
-
 }

@@ -1,17 +1,13 @@
-import { Injectable } from '@angular/core';
-import { AuthService } from '../services/auth.service';
-import { Claims } from '../model';
-import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse } from '@angular/common/http';
+import { Injectable, Injector } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { HttpResponse } from 'selenium-webdriver/http';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
+import { SoBaseService } from '../services/sobase.service';
+
+// import { HttpResponse } from 'selenium-webdriver/http';
 
 @Injectable()
-export class SaleService {
-
-  private claims: Claims;
-  private options;
+export class SaleService extends SoBaseService {
 
   private queryAllSales = {
     'ProviderName': 'FindSale',
@@ -22,12 +18,8 @@ export class SaleService {
     'PageSize': 20
   };
 
-  constructor(private http: HttpClient, private authService: AuthService) {
-    this.options = {
-      headers: new HttpHeaders({ 'Authorization': this.authService.getAuthorizationHeaderValue() })
-    };
-
-    this.claims = this.authService.getClaims();
+  constructor(private injector: Injector) {
+    super('Sale', injector);
    }
 
    getAllSales(): Observable<any> {
@@ -38,33 +30,14 @@ export class SaleService {
 
    /** Gets or creates a sale depended on saleId. 0 will create a new sale */
    getSale(saleId): Observable<any> {
-    if (saleId === 0) {
-      return this.http.get<any>(this.claims.webapi_url + '/Sale/default', this.options)
-      .catch(this.onError);
-     } else {
-      return this.http.get<any>(this.claims.webapi_url + '/Sale/' + saleId, this.options)
-      .catch(this.onError);
-     }
+    return this.get(saleId);
   }
 
   deleteSale(saleId) {
-    return this.http.delete(this.claims.webapi_url + '/Sale/' + saleId, this.options)
-    .catch(this.onError);
+    return this.delete(saleId);
   }
 
   saveSale(sale) {
-    if (sale.SaleId > 0) {
-      return this.http.put<any>(this.claims.webapi_url + '/Sale/' + sale.SaleId, sale,
-       this.options)
-       .catch(this.onError);
-     } else {
-       return this.http.post<any>(this.claims.webapi_url + '/Sale', sale,
-       this.options)
-      .catch(this.onError);
-     }
-  }
-
-  onError(error: HttpErrorResponse) {
-    return Observable.throw(error.message || 'Server Error');
+    return this.save(sale);
   }
 }
