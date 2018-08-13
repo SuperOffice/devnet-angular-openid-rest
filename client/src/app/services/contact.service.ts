@@ -33,7 +33,7 @@ export class ContactService extends SoBaseService  {
    return this.get<Contact>(id);
   }
 
-  saveContact(contact) {
+  saveContact(contact): Observable<Contact> {
     return this.save(contact);
   }
 

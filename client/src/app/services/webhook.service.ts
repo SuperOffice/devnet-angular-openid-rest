@@ -16,11 +16,11 @@ export class WebhookService extends SoBaseService {
       .catch(this.onError);
   }
 
-  getWebhook(webhookId: number){
+  getWebhook(webhookId: number): Observable<IWebHook> {
     return this.get(webhookId);
   }
 
-  saveWebhook(webhook) {
+  saveWebhook(webhook): Observable<IWebHook> {
     return this.save(webhook);
   }
 

@@ -3,7 +3,6 @@ import { AuthService } from './auth.service';
 import { Claims } from '../model';
 import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import { HttpResponse } from 'selenium-webdriver/http';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 import { SoBaseService } from './sobase.service';

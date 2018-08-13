@@ -26,7 +26,7 @@ export class DocumentDetailComponent implements OnInit, AfterViewInit {
   @ViewChild(FileUploadComponent) fileUpload;
 
   public selectedDocument;
-  public selectedDocumentId;
+  public selectedDocumentId: number;
   public selectedDocumentTemplateId = 0;
   public showDropDown = false;
   public docTemplateList;
@@ -80,10 +80,10 @@ export class DocumentDetailComponent implements OnInit, AfterViewInit {
     );
 
     const documentId = this.route.paramMap.subscribe((params: ParamMap) => {
-      const selectedDocumentId = params.get('id');
+      this.selectedDocumentId = Number(params.get('id'));
 
-      if (selectedDocumentId > 0) {
-        this.docSvc.getDocument(selectedDocumentId).subscribe(document => {
+      if (this.selectedDocumentId > 0) {
+        this.docSvc.getDocument(this.selectedDocumentId).subscribe(document => {
           this.selectedDocument = document;
           this.getAllPeople(this.selectedDocument.Contact.ContactId);
         });
