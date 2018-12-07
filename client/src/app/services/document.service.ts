@@ -1,10 +1,12 @@
+
+import {map, tap, finalize, catchError} from 'rxjs/operators';
 import { Injectable, Injector } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { HttpHeaders } from '@angular/common/http';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/finally';
-import 'rxjs/add/observable/throw';
+
+
+
+
 import { Claims } from '../model';
 import { SoBaseService } from './sobase.service';
 
@@ -30,8 +32,8 @@ export class DocumentService extends SoBaseService {
         this.claims.webapi_url + '/Agents/Archive/GetArchiveListByColumns2',
         this.queryAllDocuments,
         this.options
-      )
-      .catch(this.onError);
+      ).pipe(
+      catchError(this.onError));
   }
 
   getDocument(documentId): Observable<any> {
@@ -43,8 +45,8 @@ export class DocumentService extends SoBaseService {
       .get<any>(
         `${this.claims.webapi_url}/Document/${documentId}/Property`,
         this.options
-      )
-      .catch(this.onError);
+      ).pipe(
+      catchError(this.onError));
   }
 
   downloadDocument(
@@ -64,8 +66,8 @@ export class DocumentService extends SoBaseService {
           Accept: fileType,
         }),
         responseType: 'blob'
-      })
-      .catch(this.onError);
+      }).pipe(
+      catchError(this.onError));
   }
 
   downloadAppFile(
@@ -87,11 +89,11 @@ export class DocumentService extends SoBaseService {
       .get(
         `${this.claims.webapi_url}/Document/${documentId}/Content`,
         this.options
-      )
-      .do(start)
-      .map(res => res)
-      .finally(stop)
-      .catch(this.onError);
+      ).pipe(
+      tap(start),
+      map(res => res),
+      finalize(stop),
+      catchError(this.onError),);
   }
 
   deleteDocument(documentId: number): Observable<any> {
@@ -100,8 +102,8 @@ export class DocumentService extends SoBaseService {
 
   createDocument(document: any): Observable<any> {
     return this.http
-      .post(`${this.claims.webapi_url}/Document/`, document, this.options)
-      .catch(this.onError);
+      .post(`${this.claims.webapi_url}/Document/`, document, this.options).pipe(
+      catchError(this.onError));
   }
 
   createDocumentByTemplate(
@@ -143,7 +145,7 @@ export class DocumentService extends SoBaseService {
       url += this.getQueryParameter('project', projectId);
     }
 
-    return this.http.post(url, null, this.options).catch(this.onError);
+    return this.http.post(url, null, this.options).pipe(catchError(this.onError));
   }
 
   getQueryParameter(name: string, value: number): string {
@@ -154,7 +156,7 @@ export class DocumentService extends SoBaseService {
     return this.http
       .put(`${this.claims.webapi_url}/Document/default`,
       document,
-      this.options)
-      .catch(this.onError);
+      this.options).pipe(
+      catchError(this.onError));
   }
 }

@@ -12,7 +12,8 @@ import { UdefService } from '../../services/udef.service';
 import { DocumentService } from '../../services/document.service';
 import { AuthService } from '../../services';
 import { error } from 'util';
-import { mime, lookup } from 'mime-types';
+// remove mime-types due to dependencies on path...
+// import { mime, lookup } from 'mime-types';
 import { Claims } from '../../model';
 import { Contact } from '../../contact/contact.interface';
 
@@ -243,7 +244,7 @@ export class DocumentDetailComponent implements OnInit, AfterViewInit {
   }
 
   downloadFile() {
-    const contentType = this.getContentType();
+    const contentType = 'application/octet-stream';
 
     this.docSvc
       .downloadDocument(
@@ -266,8 +267,8 @@ export class DocumentDetailComponent implements OnInit, AfterViewInit {
       );
   }
 
-  getContentType(): string {
-    let mimeType = lookup(this.selectedDocument.Name) || 'application/octet-stream';
-    return mimeType;
-  }
+  // getContentType(): string {
+  //   let mimeType = lookup(this.selectedDocument.Name) || 'application/octet-stream';
+  //   return mimeType;
+  // }
 }

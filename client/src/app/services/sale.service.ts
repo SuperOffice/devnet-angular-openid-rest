@@ -1,7 +1,9 @@
+
+import {catchError} from 'rxjs/operators';
 import { Injectable, Injector } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/observable/throw';
+import { Observable } from 'rxjs';
+
+
 import { SoBaseService } from '../services/sobase.service';
 
 // import { HttpResponse } from 'selenium-webdriver/http';
@@ -25,7 +27,7 @@ export class SaleService extends SoBaseService {
    getAllSales(): Observable<any> {
     return this.http.post<any>(
       this.claims.webapi_url + '/Agents/Archive/GetArchiveListByColumns2',
-      this.queryAllSales, this.options).catch(this.onError);
+      this.queryAllSales, this.options).pipe(catchError(this.onError));
   }
 
    /** Gets or creates a sale depended on saleId. 0 will create a new sale */

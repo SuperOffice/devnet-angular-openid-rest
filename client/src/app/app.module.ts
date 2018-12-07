@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ToasterModule, ToasterService } from 'angular5-toaster';
+// import { ToasterModule, ToasterService } from 'angular5-toaster';
 
 import { FileUploadService, WebhookService, DocumentService, SaleService, ProjectService, PersonService, UdefService, ListService, ContactService, AuthService, AuthGuardService } from './services';
 import { WebhookSocketService } from './services/webhooksocket.service';
@@ -35,7 +35,7 @@ import { DocumentComponent } from './document/document.component';
 import { DocumentDetailComponent } from './document/document-detail/document-detail.component';
 
 import { ClickOutsideDirective } from './shared/dropdown.directive';
-import { ToasterContainerComponent } from 'angular5-toaster';
+// import { ToasterContainerComponent } from 'angular5-toaster';
 import { FileUploadComponent } from './file-upload/file-upload.component'
 
 @NgModule({
@@ -70,7 +70,7 @@ import { FileUploadComponent } from './file-upload/file-upload.component'
     HttpClientModule,
     FormsModule,
     BrowserAnimationsModule,
-    ToasterModule,
+    //ToasterModule,
     NgbModule.forRoot()
   ],
   providers: [

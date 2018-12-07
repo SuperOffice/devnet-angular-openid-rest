@@ -2,8 +2,8 @@ import { Injectable, Injector } from '@angular/core';
 import { AuthService } from './auth.service';
 import { Claims } from '../model';
 import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
+import { Observable } from 'rxjs';
+
 import { UdefType, UserDefinedField } from '../model';
 import { SoBaseService } from './sobase.service';
 

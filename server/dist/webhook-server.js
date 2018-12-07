@@ -39,10 +39,11 @@ var WebhookServer = /** @class */ (function () {
         // verify signature when X-SuperOffice-Signature is present
         this.app.use(bodyParser.json({
             verify: function (req, res, buf) {
+                // get the signature from the request headers
                 var signature = req.get("X-SuperOffice-Signature");
-                // get secret from .env file.
-                var secret = process.env.SECRET || "Super";
                 if (signature) {
+                    // get secret from .env file. or set a default for debugging
+                    var secret = process.env.SECRET || "Super";
                     var computedSignature = crypto
                         .createHmac("sha256", secret)
                         .update(buf.toString())
@@ -51,7 +52,7 @@ var WebhookServer = /** @class */ (function () {
                         console.log("Valid signature!");
                     }
                     else {
-                        throw new Error("Invalid signature.");
+                        throw new Error("Invalid signature. The signatures do not match!");
                     }
                 }
             }

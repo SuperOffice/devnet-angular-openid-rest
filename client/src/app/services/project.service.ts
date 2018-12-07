@@ -1,6 +1,8 @@
+
+import {catchError} from 'rxjs/operators';
 import { Injectable, Injector } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/catch';
+import { Observable } from 'rxjs';
+
 import { SoBaseService } from './sobase.service';
 
 // import { HttpResponse } from 'selenium-webdriver/http';
@@ -24,7 +26,7 @@ export class ProjectService extends SoBaseService {
    getAllProjects(): Observable<any> {
     return this.http.post<any>(
       this.claims.webapi_url + '/Agents/Archive/GetArchiveListByColumns2',
-      this.queryAllProjects, this.options).catch(this.onError);
+      this.queryAllProjects, this.options).pipe(catchError(this.onError));
   }
 
   /** Gets or creates a project depended on projectId. 0 will create a new project */

@@ -1,7 +1,9 @@
+
+import {catchError} from 'rxjs/operators';
 import { Injectable, Injector } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/observable/throw';
+import { Observable } from 'rxjs';
+
+
 import { Person } from '../person/person.interface';
 import { SoBaseService } from './sobase.service';
 
@@ -30,7 +32,7 @@ export class PersonService extends SoBaseService {
 
     return this.http.post<any>(
       this.claims.webapi_url + '/Agents/Archive/GetArchiveListByColumns2',
-      this.queryMyPerson, this.options).catch(this.onError);
+      this.queryMyPerson, this.options).pipe(catchError(this.onError));
    }
 
    getPerson(personId): Observable<Person> {
@@ -51,8 +53,8 @@ export class PersonService extends SoBaseService {
     query += '?$select=personId,firstName,middleName,lastName,contactId,title,birthdate,';
     query += 'portraitThumbnail,phone/formattedNumber,email/emailAddress';
 
-      return this.http.get(query, this.options)
-      .catch(this.onError);
+      return this.http.get(query, this.options).pipe(
+      catchError(this.onError));
    }
 
    getAllAssociates(): Observable<any> {
@@ -61,7 +63,7 @@ export class PersonService extends SoBaseService {
     // query += '?$select=personId,firstName,middleName,lastName,contactId,title,birthdate,';
     // query += 'portraitThumbnail,phone/formattedNumber,email/emailAddress';
 
-      return this.http.get(query, this.options)
-      .catch(this.onError);
+      return this.http.get(query, this.options).pipe(
+      catchError(this.onError));
    }
 }

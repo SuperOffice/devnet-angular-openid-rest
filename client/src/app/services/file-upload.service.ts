@@ -1,3 +1,7 @@
+
+import {throwError as observableThrowError,  Observable } from 'rxjs';
+
+import {catchError} from 'rxjs/operators';
 import { Injectable } from "@angular/core";
 import {
   HttpClient,
@@ -5,10 +9,7 @@ import {
   HttpParams,
   HttpErrorResponse
 } from "@angular/common/http";
-import { Observable } from "rxjs/Observable";
-import "rxjs/add/operator/map";
-import "rxjs/add/operator/catch";
-import "rxjs/add/observable/throw";
+
 import { AuthService } from "./auth.service";
 import { Claims } from "../model";
 
@@ -43,11 +44,11 @@ export class FileUploadService {
         `${this.claims.webapi_url}/Document/${documentId}/Content`,
         formData,
         this.options
-      )
-      .catch(this.onError);
+      ).pipe(
+      catchError(this.onError));
   }
 
   onError(error: HttpErrorResponse) {
-    return Observable.throw(error.message || "Server Error");
+    return observableThrowError(error.message || "Server Error");
   }
 }

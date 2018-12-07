@@ -1,17 +1,20 @@
+
+import {throwError as observableThrowError,  Observable } from 'rxjs';
+
+import {catchError} from 'rxjs/operators';
 import { Injector, Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
 import { Claims } from '../model';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/observable/throw';
+
+
 import { Person } from '../person/person.interface';
 
 @Injectable()
 export class SoBaseService {
 
   protected claims: Claims;
-  protected options;
+  protected options: { headers: HttpHeaders };
   protected authService: AuthService;
   protected http: HttpClient;
   protected Name: String;
@@ -35,39 +38,42 @@ export class SoBaseService {
       }),
     };
 
+
     this.claims = this.authService.getClaims();
    }
 
    get<T>(id): Observable<T> {
+     //console.log('Options: ' + this.options);
+
      if (id === 0) {
-      return this.http.get<T>(`${this.claims.webapi_url}/${this.Name}/default`, this.options)
-      .catch(this.onError);
+      return this.http.get<T>(`${this.claims.webapi_url}/${this.Name}/default`, this.options).pipe(
+      catchError(this.onError));
      } else {
-      return this.http.get<T>(`${this.claims.webapi_url}/${this.Name}/${id}`, this.options)
-      .catch(this.onError);
+      return this.http.get<T>(`${this.claims.webapi_url}/${this.Name}/${id}`, this.options).pipe(
+      catchError(this.onError));
      }
    }
 
    save<T>(entity): Observable<T> {
      const id = entity[`${this.Name}Id`];
      if (id > 0) {
-      return this.http.put<any>(`${this.claims.webapi_url}/${this.Name}/${id}`, entity,
-       this.options)
-       .catch(this.onError);
+      return this.http.put<T>(`${this.claims.webapi_url}/${this.Name}/${id}`, entity,
+       this.options).pipe(
+       catchError(this.onError));
      } else {
-       return this.http.post<any>(`${this.claims.webapi_url}/${this.Name}`, entity,
-       this.options)
-      .catch(this.onError);
+       return this.http.post<T>(`${this.claims.webapi_url}/${this.Name}`, entity,
+       this.options).pipe(
+      catchError(this.onError));
      }
    }
 
    delete(id) {
-    return this.http.delete(`${this.claims.webapi_url}/${this.Name}/${id}`, this.options)
-    .catch(this.onError);
+    return this.http.delete(`${this.claims.webapi_url}/${this.Name}/${id}`, this.options).pipe(
+    catchError(this.onError));
    }
 
    onError(error: HttpErrorResponse) {
-    return Observable.throw(error.message || 'Server Error');
+    return observableThrowError(error.message || 'Server Error');
   }
 
 }

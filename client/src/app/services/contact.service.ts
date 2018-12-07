@@ -1,8 +1,10 @@
+
+import {catchError} from 'rxjs/operators';
 import { Injectable, Injector } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Contact } from '../contact/contact.interface';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/observable/throw';
+
+
 import { SoBaseService } from './sobase.service';
 
 @Injectable()
@@ -21,12 +23,12 @@ export class ContactService extends SoBaseService  {
   getMyContact(): Observable<Contact> {
     return this.http.post<Contact>(
       this.claims.webapi_url + '/Agents/Contact/GetMyContact',
-      '', this.options).catch(this.onError);
+      '', this.options).pipe(catchError(this.onError));
   }
 
   getContacts(): Observable<any> {
     return this.http.get<any>(
-      this.claims.webapi_url + '/Contact?$select=name', this.options).catch(this.onError);
+      this.claims.webapi_url + '/Contact?$select=name', this.options).pipe(catchError(this.onError));
   }
 
   getContact(id): Observable<Contact> {

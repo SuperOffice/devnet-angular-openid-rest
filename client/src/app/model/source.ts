@@ -6,5 +6,6 @@ export enum Source {
   PROJECT = 'project',
   PROJECTMEMBER = 'projectmember',
   SALE = 'sale',
-  SALESTAKEHOLDER = 'salestakeholder'
+  SALESTAKEHOLDER = 'salestakeholder',
+  DOCUMENT = 'document'
 }
