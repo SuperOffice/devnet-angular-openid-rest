@@ -36,7 +36,7 @@
         <select class='select-option' [(ngModel)]='selectedSale.SaleType.Id' (ngModelChange)='onSaleTypeSelected($event)'
           name="saleType">
           <option class='option' [value]="0">Select One</option>
-          <option class='option' *ngFor='let saleType of saleTypeList' [value]="saleType.Id">{{saleType.Name}}</option>
+          <option class='option' *ngFor='let saleType of saleTypeList' [value]="saleType.SaleTypeId">{{saleType.Name}}</option>
         </select>
       </div>
 
