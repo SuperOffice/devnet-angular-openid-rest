@@ -1,39 +1,34 @@
+import { map, tap, finalize, catchError } from "rxjs/operators";
+import { Injectable, Injector } from "@angular/core";
+import { Observable } from "rxjs";
+import { HttpHeaders } from "@angular/common/http";
 
-import {map, tap, finalize, catchError} from 'rxjs/operators';
-import { Injectable, Injector } from '@angular/core';
-import { Observable } from 'rxjs';
-import { HttpHeaders } from '@angular/common/http';
-
-
-
-
-import { Claims } from '../model';
-import { SoBaseService } from './sobase.service';
+import { Claims } from "../model";
+import { SoBaseService } from "./sobase.service";
 
 @Injectable()
 export class DocumentService extends SoBaseService {
-
   private queryAllDocuments = {
-    ProviderName: 'FindDocument',
-    Columns: 'documentId,text,document/description',
-    Restrictions: 'documentId > 0',
-    Entities: 'document',
+    ProviderName: "FindDocument",
+    Columns: "documentId,text,document/description",
+    Restrictions: "documentId > 0",
+    Entities: "document",
     Page: 0,
     PageSize: 20
   };
 
   constructor(private injector: Injector) {
-    super('Document', injector);
+    super("Document", injector);
   }
 
   getAllDocuments(): Observable<any> {
     return this.http
       .post<any>(
-        this.claims.webapi_url + '/Agents/Archive/GetArchiveListByColumns2',
+        this.claims.webapi_url + "/Agents/Archive/GetArchiveListByColumns2",
         this.queryAllDocuments,
         this.options
-      ).pipe(
-      catchError(this.onError));
+      )
+      .pipe(catchError(this.onError));
   }
 
   getDocument(documentId): Observable<any> {
@@ -45,8 +40,8 @@ export class DocumentService extends SoBaseService {
       .get<any>(
         `${this.claims.webapi_url}/Document/${documentId}/Property`,
         this.options
-      ).pipe(
-      catchError(this.onError));
+      )
+      .pipe(catchError(this.onError));
   }
 
   downloadDocument(
@@ -54,7 +49,6 @@ export class DocumentService extends SoBaseService {
     fileName: string,
     fileType: string
   ): Observable<Blob> {
-
     console.log(
       `[Doc]: ${documentId}, [Filename]: ${fileName}, [Filetype]: ${fileType}`
     );
@@ -63,11 +57,11 @@ export class DocumentService extends SoBaseService {
       .get(`${this.claims.webapi_url}/Document/${documentId}/Content`, {
         headers: new HttpHeaders({
           Authorization: this.authService.getAuthorizationHeaderValue(),
-          Accept: fileType,
+          Accept: fileType
         }),
-        responseType: 'blob'
-      }).pipe(
-      catchError(this.onError));
+        responseType: "blob"
+      })
+      .pipe(catchError(this.onError));
   }
 
   downloadAppFile(
@@ -82,18 +76,20 @@ export class DocumentService extends SoBaseService {
         Authorization: this.authService.getAuthorizationHeaderValue(),
         Accept: fileType
       }),
-      responseType: 'blob'
+      responseType: "blob"
     };
 
     return this.http
       .get(
         `${this.claims.webapi_url}/Document/${documentId}/Content`,
         this.options
-      ).pipe(
-      tap(start),
-      map(res => res),
-      finalize(stop),
-      catchError(this.onError),);
+      )
+      .pipe(
+        tap(start),
+        map(res => res),
+        finalize(stop),
+        catchError(this.onError)
+      );
   }
 
   deleteDocument(documentId: number): Observable<any> {
@@ -102,8 +98,8 @@ export class DocumentService extends SoBaseService {
 
   createDocument(document: any): Observable<any> {
     return this.http
-      .post(`${this.claims.webapi_url}/Document/`, document, this.options).pipe(
-      catchError(this.onError));
+      .post(`${this.claims.webapi_url}/Document/`, document, this.options)
+      .pipe(catchError(this.onError));
   }
 
   createDocumentByTemplate(
@@ -122,30 +118,32 @@ export class DocumentService extends SoBaseService {
     let url = `${this.claims.webapi_url}/Document/${documentId}/Content?`;
 
     if (contactId) {
-      url += this.getQueryParameter('contact', contactId);
+      url += this.getQueryParameter("contact", contactId);
     }
 
     if (personId) {
-      url += this.getQueryParameter('person', personId);
+      url += this.getQueryParameter("person", personId);
     }
 
     if (appointmentId) {
-      url += this.getQueryParameter('appointment', appointmentId);
+      url += this.getQueryParameter("appointment", appointmentId);
     }
 
     if (saleId) {
-      url += this.getQueryParameter('sale', saleId);
+      url += this.getQueryParameter("sale", saleId);
     }
 
     if (selectionId) {
-      url += this.getQueryParameter('selection', selectionId);
+      url += this.getQueryParameter("selection", selectionId);
     }
 
     if (projectId) {
-      url += this.getQueryParameter('project', projectId);
+      url += this.getQueryParameter("project", projectId);
     }
 
-    return this.http.post(url, null, this.options).pipe(catchError(this.onError));
+    return this.http
+      .post(url, null, this.options)
+      .pipe(catchError(this.onError));
   }
 
   getQueryParameter(name: string, value: number): string {
@@ -154,9 +152,7 @@ export class DocumentService extends SoBaseService {
 
   saveDocument(document: any): Observable<any> {
     return this.http
-      .put(`${this.claims.webapi_url}/Document/default`,
-      document,
-      this.options).pipe(
-      catchError(this.onError));
+      .put(`${this.claims.webapi_url}/Document/default`, document, this.options)
+      .pipe(catchError(this.onError));
   }
 }

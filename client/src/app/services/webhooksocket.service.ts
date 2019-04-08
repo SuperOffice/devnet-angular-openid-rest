@@ -1,10 +1,10 @@
 import { Injectable } from "@angular/core";
-import { Observable ,  Observer } from "rxjs";
+import { Observable, Observer } from "rxjs";
 
 import * as socketIo from "socket.io-client";
 
 import { Event } from "../model/event";
-import { WebhookPayload } from '../model/webhookpayload'
+import { WebhookPayload } from "../model/webhookpayload";
 
 @Injectable()
 export class WebhookSocketService {

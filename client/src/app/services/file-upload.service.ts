@@ -1,7 +1,6 @@
+import { throwError as observableThrowError, Observable } from "rxjs";
 
-import {throwError as observableThrowError,  Observable } from 'rxjs';
-
-import {catchError} from 'rxjs/operators';
+import { catchError } from "rxjs/operators";
 import { Injectable } from "@angular/core";
 import {
   HttpClient,
@@ -21,9 +20,9 @@ export class FileUploadService {
   constructor(private http: HttpClient, private authSvc: AuthService) {
     let headerFields = new HttpHeaders({
       Authorization: this.authSvc.getAuthorizationHeaderValue(),
-      'Accept': 'application/json',
-      'Content-Type': 'application/octet-stream',
-      'Accept-Language': '*'
+      Accept: "application/json",
+      "Content-Type": "application/octet-stream",
+      "Accept-Language": "*"
     });
     //headerFields.append('Content-Type', 'multipart/form-data')
 
@@ -35,17 +34,16 @@ export class FileUploadService {
   }
 
   putFile(documentId: number, fileToUpload: File): Observable<any> {
-
     const formData: FormData = new FormData();
-    formData.append('file', fileToUpload, fileToUpload.name);
+    formData.append("file", fileToUpload, fileToUpload.name);
 
     return this.http
       .put(
         `${this.claims.webapi_url}/Document/${documentId}/Content`,
         formData,
         this.options
-      ).pipe(
-      catchError(this.onError));
+      )
+      .pipe(catchError(this.onError));
   }
 
   onError(error: HttpErrorResponse) {
