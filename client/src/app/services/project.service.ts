@@ -10,23 +10,19 @@ import { SoBaseService } from './sobase.service';
 @Injectable()
 export class ProjectService extends SoBaseService {
 
-  private queryAllProjects = {
-    'ProviderName': 'FindProject',
-    'Columns': 'projectId, name, description',
-    'Restrictions': 'projectId > 0',
-    'Entities': 'project',
-    'Page': 0,
-    'PageSize': 20
-  };
-
   constructor(injector: Injector) {
     super('Project', injector);
    }
 
    getAllProjects(): Observable<any> {
-    return this.http.post<any>(
-      this.claims.webapi_url + '/Agents/Archive/GetArchiveListByColumns2',
-      this.queryAllProjects, this.options).pipe(catchError(this.onError));
+    return this.http
+      .get<any>(
+        `${
+          this.claims.webapi_url
+        }/project?$select=projectId,name,description&$top=20`,
+        this.options
+      )
+      .pipe(catchError(this.onError));
   }
 
   /** Gets or creates a project depended on projectId. 0 will create a new project */
